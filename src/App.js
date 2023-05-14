@@ -13,7 +13,7 @@ const App = () => {
   const [coords, setCoords] = useState({});
   const [bounds, setBounds] = useState(null);
 
-  // const [weatherData, setWeatherData] = useState([]);
+  const [weatherData, setWeatherData] = useState([]);
   const [filteredPlaces, setFilteredPlaces] = useState([]);
   const [places, setPlaces] = useState([]);
 
@@ -43,10 +43,11 @@ const App = () => {
     setIsLoading(false);
   }, [type, bounds]);
 
-  // const fetchWeatherData = useCallback(async (lat, lng) => {
-  //   const data = getWeatherData(lat, lng);
-  //   setWeatherData(data);
-  // })
+  const fetchWeatherData = useCallback(async (lat, lng) => {
+    const data = await getWeatherData(lat, lng);
+    console.log(data);
+    setWeatherData(data);
+  })
 
   useEffect(() => {
     navigator.geolocation.getCurrentPosition(({ coords: { latitude, longitude } }) => {
@@ -64,9 +65,7 @@ const App = () => {
     if (bounds) {
       setIsLoading(true);
 
-      // getWeatherData(coords.lat, coords.lng)
-      //   .then((data) => setWeatherData(data));
-      // fetchWeatherData(coords.lat, coords.lng);
+      fetchWeatherData(coords.lat, coords.lng);
       fetchPlacesData(type, bounds.sw, bounds.ne);
     }
   }, [bounds, type]);
@@ -94,7 +93,7 @@ const App = () => {
             setCoords={setCoords}
             coords={coords}
             places={filteredPlaces.length ? filteredPlaces : places}
-            // weatherData={weatherData}
+            weatherData={weatherData}
           />
         </Grid>
       </Grid>

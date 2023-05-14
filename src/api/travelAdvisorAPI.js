@@ -26,12 +26,8 @@ export const getWeatherData = async (lat, lng) => {
   try {
     const apiKey = process.env.REACT_APP_RAPID_API_WEATHER_API_KEY;
     if (lat && lng) {
-      const { data } = await axios.get(`https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lng}&appid=${apiKey}`, {
+      const { data } = await axios.get(`https://api.openweathermap.org/data/2.5/onecall?lat=${lat}&lon=${lng}&appid=${apiKey}`, {
         params: { lat, lon: lng },
-        headers: {
-          'x-rapidapi-key': apiKey,
-          'x-rapidapi-host': 'community-open-weather-map.p.rapidapi.com',
-        },
       });
 
       return data;
