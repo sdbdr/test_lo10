@@ -4,9 +4,9 @@ import { memoize } from "../util/memoize";
 
 const URL = 'https://travel-advisor.p.rapidapi.com/hotels/list-in-boundary';
 
-export const getPlacesData = memoize(async (sw, ne) => {
+export const getPlacesData = memoize(async (type, sw, ne) => {
     try {
-        const response = await axios.get(URL, {
+        const { data } = await axios.get(`https://travel-advisor.p.rapidapi.com/${type}/list-in-boundary`, {
             params: {
                 // bl_latitude: sw.lat,
                 // bl_longitude: ne.lat,
@@ -22,7 +22,8 @@ export const getPlacesData = memoize(async (sw, ne) => {
                 'X-RapidAPI-Host': 'travel-advisor.p.rapidapi.com'
             }
         });
-        return response.data;
+        
+        return data;
     } catch (err) {
         console.log(err);
     }
