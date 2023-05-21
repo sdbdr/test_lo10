@@ -1,5 +1,9 @@
 import TripBox from "./TripBox";
-import TripDetail from "./TripDetail";
+import TripManagement from "./SubRoutes/TripManagement";
 import TripPage from "./TripPage";
+import TripNavBar from "./TripNavBar";
+import Trip_Itinary from "./SubRoutes/Trip_Itinary";
+import Trip_Tasks from "./SubRoutes/Trip_Tasks";
 
-export { TripBox, TripDetail, TripPage };
+
+export { TripBox, TripManagement, TripPage,TripNavBar,Trip_Itinary,Trip_Tasks };

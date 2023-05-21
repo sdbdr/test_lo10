@@ -4,10 +4,11 @@ import { Link } from "react-router-dom";
 import { Button } from 'react-bootstrap';
 
 const TripBox = (props) => {
+  
   return (
     <div className="Trip_box">
-        <Link to={"/Trips/Details?id="+props.trip.id}>
-             <Button variant="outline-none">
+        <Link to={"/Trips/Management?id="+props.trip.id}>
+             <Button   variant="outline-none">
                 <Card style={{ width: '25rem' }}>
                     <Row>
                     <Col xs={4} style={{ backgroundColor: "rgba(0, 0, 0, 0.2)" }}>
