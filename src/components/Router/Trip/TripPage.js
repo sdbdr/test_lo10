@@ -65,10 +65,30 @@ const TripPage = () => {
           // Save the new trip to local storage
         const trips = JSON.parse(localStorage.getItem("trips")) || [];
         trips.push(newTrip);
-        localStorage.setItem("trips", JSON.stringify(trips));
-
+        // localStorage.setItem("trips", JSON.stringify(trips));    
       
         closeDialog();
+
+        const option = {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify(trips),
+          };
+           fetch("http://localhost:5000/api/trips", option).then(response => {
+            if (response.ok) {
+              console.log(response.text())
+            } else {
+              // Handle errors
+              throw new Error('PUT request failed');
+            }
+          })
+          .catch(error => {
+            // Handle errors
+            console.error(error);
+          });
+
       };
 
     return (
