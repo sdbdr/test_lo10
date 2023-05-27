@@ -1,0 +1,30 @@
+[
+    {
+      "tripId": "1",
+      "tripName": "Lisbonne",
+      "startDate": "2023-06-20",
+      "endDate": "2023-06-27",
+      "period":7,
+      "city": "Lisbonne",
+      "description": "Voyage à Lisbonne",
+      "budget":500,
+      "tripMembers" : 
+      [
+        {
+            "name" : "Audrey"
+        },
+        {
+            "name" : "Kaykay"
+        }
+      ],
+      "tripPlans" : [
+        {
+            "lat": "38.738840",
+            "lng": "-9.357570",
+            "type": "activity",
+            "date":"2023-06-21"
+          }
+      ]
+    }
+]
+  
