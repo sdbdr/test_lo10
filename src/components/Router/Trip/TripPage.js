@@ -3,11 +3,13 @@ import { Fab, Dialog, DialogTitle, DialogContent, TextField, DialogActions, Butt
 import AddIcon from '@material-ui/icons/Add';
 
 import TripBox from "./TripBox";
+import { getPeriod } from '../../../utils/formatDate';
+import { start } from '@google/maps/lib/internal/task';
 
 
 const data = {
-    id: 24,
-    title: "Paris Trip",
+    tripId: 24,
+    tripName: "Paris Trip",
     description: "Trip quick description",
     subtitle: "Wed, Nov 17 - Mond, Dec 23",
     period: "6 Days, Group \"Buddies\""
@@ -20,6 +22,7 @@ const TripPage = () => {
     const [startDate, setStartDate] = useState("");
     const [endDate, setEndDate] = useState("");
     const [description, setDescription] = useState("");
+    const [trips, setTrips] = useState(JSON.parse(localStorage.getItem("trips")) || []);
 
     const openDialog = () => {
         setIsOpen(true);
@@ -45,7 +48,6 @@ const TripPage = () => {
         setDescription(event.target.value);
     };
 
-
     
     const handleAddTrip = () => {
         const idGenerated = Math.random().toString(36).substring(2,7);
@@ -54,7 +56,7 @@ const TripPage = () => {
           tripName: title,
           startDate,
           endDate,
-          period: startDate-endDate, // You can define a function to calculate the period in days
+          period: getPeriod(startDate, endDate), // You can define a function to calculate the period in days
           city: "", // Replace with the actual city
           description,
           budget: "", // Set an initial budget value or replace with the actual budget
@@ -63,18 +65,23 @@ const TripPage = () => {
         };
       
           // Save the new trip to local storage
-        const trips = JSON.parse(localStorage.getItem("trips")) || [];
+        const trips = getTrips();
         trips.push(newTrip);
         localStorage.setItem("trips", JSON.stringify(trips));
+        setTrips(trips);
 
-      
         closeDialog();
-      };
+    };
+
+    const getTrips = () => {
+        return JSON.parse(localStorage.getItem("trips")) || []
+    }
 
     return (
         <div className="Trips">
             {/* TripBox component */}
-            <TripBox trip={data} />
+            {/* <TripBox trip={data} /> */}
+            {trips.map((trip, id) => <TripBox key={id} trip={trip} />)}
 
             {/* Round "+" button */}
             <Fab color="primary" aria-label="add" style={{ position: 'fixed', bottom: '1rem', right: '1rem' }} onClick={openDialog}>

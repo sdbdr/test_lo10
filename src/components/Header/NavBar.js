@@ -12,7 +12,7 @@ const Navbar = () => {
                 <Typography variant='h5' className={classes.title}>
                     Travel planning
                 </Typography>
-                <Link to="/Trips">
+                <Link to="/trips">
                         <Button>
                             <Typography variant='h6' className={classes.title} style={{color: 'white'}}>
                             Trips
@@ -20,7 +20,7 @@ const Navbar = () => {
                         </Button>
                     </Link>
                 <Box display='flex'>                       
-                    <Link to="/Research">
+                    <Link to="/research">
                         <Button>
                             <Typography variant='h6' className={classes.title} style={{color: 'white'}}>
                             Research
