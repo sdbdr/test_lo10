@@ -1,4 +1,4 @@
-import React, { useState, useEffect, createRef } from 'react';
+import React, { useState, useEffect, createRef } from "react";
 import {
   CircularProgress,
   Grid,
@@ -12,23 +12,16 @@ import {
   DialogContent,
   DialogActions,
   Button,
-  TextField
-} from '@material-ui/core';
+  TextField,
+} from "@material-ui/core";
 
-import PlaceDetails from '../PlaceDetails/PlaceDetails';
-import useStyles from './styles.js';
+import PlaceDetails from "../PlaceDetails/PlaceDetails";
+import useStyles from "./styles.js";
 
-const List = ({
-  places,
-  type,
-  setType,
-  rating,
-  setRating,
-  isLoading,
-}) => {
+const List = ({ places, type, setType, rating, setRating, isLoading }) => {
   const [elRefs, setElRefs] = useState([]);
   const [openDialog, setOpenDialog] = useState(false);
-  const [tripName, setTripName] = useState('');
+  const [tripName, setTripName] = useState("");
   const [tripNamesFromStorage, setTripNamesFromStorage] = useState([]);
   const [selectedDate, setSelectedDate] = useState(null);
   const [selectedEndDate, setSelectedEndDate] = useState(null);
@@ -48,78 +41,79 @@ const List = ({
 
   const handleDialogClose = () => {
     setOpenDialog(false);
-    setTripName('');
+    setTripName("");
     setSelectedDate(null);
   };
 
   const printLocalStorage = () => {
-    const localStorageData = localStorage.getItem('trips');
+    const localStorageData = localStorage.getItem("trips");
     if (localStorageData) {
       const parsedData = JSON.parse(localStorageData);
       const jsonStr = JSON.stringify(parsedData, null, 2);
       console.log(jsonStr);
     } else {
-      console.log('Local storage is empty.');
+      console.log("Local storage is empty.");
     }
   };
 
   const handleFormSubmit = (e) => {
     e.preventDefault();
-    console.log('Nom du voyage :', tripName);
-    console.log('Date sélectionnée :', selectedDate);
-  
-    const tripsFromStorage = JSON.parse(localStorage.getItem('trips')) || [];
-    const selectedTrip = tripsFromStorage.find(trip => trip.tripName === tripName);
+    console.log("Nom du voyage :", tripName);
+    console.log("Date sélectionnée :", selectedDate);
+
+    const tripsFromStorage = JSON.parse(localStorage.getItem("trips")) || [];
+    const selectedTrip = tripsFromStorage.find(
+      (trip) => trip.tripName === tripName
+    );
     if (selectedTrip) {
       const tripId = selectedTrip.tripId;
-      console.log('Trip ID:', tripId);
-  
+      console.log("Trip ID:", tripId);
+
       const selectedPlace = places[childClicked];
       if (selectedPlace) {
         const coordinates = {
           lat: selectedPlace.latitude,
-          lng: selectedPlace.longitude
+          lng: selectedPlace.longitude,
         };
-        console.log('Coordonnées de l\'élément sélectionné :', coordinates);
-  
+        console.log("Coordonnées de l'élément sélectionné :", coordinates);
+
         const newTripPlan = {
           tripName: tripName,
           tripDate: selectedDate,
           lat: selectedPlace.latitude,
-          lng: selectedPlace.longitude
+          lng: selectedPlace.longitude,
         };
-  
-        const updatedTrips = tripsFromStorage.map(trip => {
+
+        const updatedTrips = tripsFromStorage.map((trip) => {
           if (trip.tripId === tripId) {
             return {
               ...trip,
-              tripPlans: [...trip.tripPlans, newTripPlan]
+              tripPlans: [...trip.tripPlans, newTripPlan],
             };
           }
           return trip;
         });
-  
-        localStorage.setItem('trips', JSON.stringify(updatedTrips));
+
+        localStorage.setItem("trips", JSON.stringify(updatedTrips));
       }
     }
 
-    printLocalStorage()
-    
-  
+    printLocalStorage();
+
     setOpenDialog(false);
-    setTripName('');
+    setTripName("");
     setSelectedDate(null);
   };
 
   useEffect(() => {
-    setElRefs(refs =>
+    setElRefs((refs) =>
       Array(places.length)
         .fill()
-        .map((_, i) => refs[i] || createRef()),
+        .map((_, i) => refs[i] || createRef())
     );
 
-    const tripsFromStorage = JSON.parse(localStorage.getItem('trips')) || [];
-    const tripNames = tripsFromStorage.map(trip => trip.tripName);
+    const tripsFromStorage = JSON.parse(localStorage.getItem("trips")) || [];
+    const tripNames = tripsFromStorage.map((trip) => trip.tripName);
     setTripNamesFromStorage(tripNames);
   }, [places]);
 
@@ -127,8 +121,10 @@ const List = ({
     const selectedTripName = event.target.value;
     setTripName(selectedTripName);
 
-    const tripsFromStorage = JSON.parse(localStorage.getItem('trips')) || [];
-    const selectedTrip = tripsFromStorage.find(trip => trip.tripName === selectedTripName);
+    const tripsFromStorage = JSON.parse(localStorage.getItem("trips")) || [];
+    const selectedTrip = tripsFromStorage.find(
+      (trip) => trip.tripName === selectedTripName
+    );
     if (selectedTrip) {
       const { startDate, endDate } = selectedTrip;
       setSelectedDate(startDate);
@@ -157,7 +153,7 @@ const List = ({
             <Select
               id="type"
               value={type}
-              onChange={e => setType(e.target.value)}
+              onChange={(e) => setType(e.target.value)}
             >
               <MenuItem value="restaurants">Restaurants</MenuItem>
               <MenuItem value="hotels">Hotels</MenuItem>
@@ -169,7 +165,7 @@ const List = ({
             <Select
               id="rating"
               value={rating}
-              onChange={e => setRating(e.target.value)}
+              onChange={(e) => setRating(e.target.value)}
             >
               <MenuItem value="">All</MenuItem>
               <MenuItem value="3">Above 3.0</MenuItem>
@@ -207,7 +203,9 @@ const List = ({
                   >
                     <MenuItem value="">Select a trip</MenuItem>
                     {tripNamesFromStorage.map((name, index) => (
-                      <MenuItem key={index} value={name}>{name}</MenuItem>
+                      <MenuItem key={index} value={name}>
+                        {name}
+                      </MenuItem>
                     ))}
                   </Select>
                 </FormControl>
@@ -216,15 +214,15 @@ const List = ({
                   label="Select Date"
                   type="date"
                   fullWidth
-                  value={selectedDate || ''}
-                  onChange={e => setSelectedDate(e.target.value)}
-                  disabled={tripName === ''}
+                  value={selectedDate || ""}
+                  onChange={(e) => setSelectedDate(e.target.value)}
+                  disabled={tripName === ""}
                   InputLabelProps={{
                     shrink: true,
                   }}
                   inputProps={{
-                    min: selectedDate || '',
-                    max: selectedEndDate || '',
+                    min: selectedDate || "",
+                    max: selectedEndDate || "",
                     disabled: isDateDisabled,
                   }}
                 />
@@ -233,7 +231,11 @@ const List = ({
                 <Button onClick={handleDialogClose} color="secondary">
                   Cancel
                 </Button>
-                <Button type="submit" color="primary" disabled={tripName === ''}>
+                <Button
+                  type="submit"
+                  color="primary"
+                  disabled={tripName === ""}
+                >
                   Add
                 </Button>
               </DialogActions>
