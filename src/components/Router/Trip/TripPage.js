@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import {
   Fab,
   Dialog,
@@ -10,16 +10,11 @@ import {
   InputLabel,
 } from "@material-ui/core";
 import AddIcon from "@material-ui/icons/Add";
-
+import { Context } from "./context";
 import TripBox from "./TripBox";
 
-const data = {
-  id: 24,
-  title: "Paris Trip",
-  description: "Trip quick description",
-  subtitle: "Wed, Nov 17 - Mond, Dec 23",
-  period: '6 Days, Group "Buddies"',
-};
+
+
 
 const TripPage = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -27,6 +22,8 @@ const TripPage = () => {
   const [startDate, setStartDate] = useState("");
   const [endDate, setEndDate] = useState("");
   const [description, setDescription] = useState("");
+
+  const { trips} = useContext(Context);
 
   const openDialog = () => {
     setIsOpen(true);
@@ -68,8 +65,8 @@ const TripPage = () => {
     };
 
     // Save the new trip to local storage
-    const trips = JSON.parse(localStorage.getItem("trips")) || [];
-    trips.push(newTrip);
+    // const trips = JSON.parse(localStorage.getItem("trips")) || [];
+    // trips.push(newTrip);
     // localStorage.setItem("trips", JSON.stringify(trips));
 
     closeDialog();
@@ -79,15 +76,15 @@ const TripPage = () => {
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify(trips),
+      body: JSON.stringify(newTrip),
     };
-    fetch("http://localhost:5000/api/trips", option)
+    fetch("http://localhost:8080/api/trips", option)
       .then((response) => {
         if (response.ok) {
           console.log(response.text());
         } else {
           // Handle errors
-          throw new Error("PUT request failed");
+          throw new Error("POST request failed");
         }
       })
       .catch((error) => {
@@ -98,9 +95,12 @@ const TripPage = () => {
 
   return (
     <div className="Trips">
-      {/* TripBox component */}
-      <TripBox trip={data} />
-
+      {/* TripBox component */}              
+    
+      {/* <TripBox trip={data} /> */}
+     {trips.map((trip)=>{
+       return <TripBox {...trip}/>
+     })}
       {/* Round "+" button */}
       <Fab
         color="primary"

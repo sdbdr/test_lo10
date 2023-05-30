@@ -8,28 +8,15 @@ import Trip_Tasks from "./Trip_Tasks";
 import { Context } from "../context";
 import { useContext, useEffect } from "react";
 const TripManagement = () => {
-  const { id, setId } = useContext(Context);
+  const { id, setId } = useContext(Context); 
 
-  const location = useLocation();
-  var queryParams = new URLSearchParams(location.search);
-  var id_URL = queryParams.get("id");
 
   useEffect(() => {
-    if (/^\d+$/.test(id_URL) && parseInt(id_URL) >= 0) {
-      setId(id_URL);
-    } else if (localStorage.getItem("id") !== "null") {
-      setId(localStorage.getItem("id"));
-    } else {
-      setId("");
-    }
-  }, [id_URL]);
+    const storedId = localStorage.getItem("id");
+    setId(storedId);
+  }, [setId]);
 
-  useEffect(() => {
-    localStorage.setItem("id", id);
-  }, [id]);
-
-  //on récupère l'id du voyage ensuite on fait une requete pour récupérer les données détaillées du voyage. Si l'id n'est pas trouvé on renvoi
-  //un message d'erreur
+  
 
   return (
     <div className="Trip_Management">

@@ -2,6 +2,7 @@ const bcrypt = require("bcrypt");
 const crypto = require("crypto");
 const express = require("express");
 const session = require("express-session");
+const fs = require('fs');
 
 const app = express();
 const port = 8080;
@@ -59,17 +60,53 @@ app.post("/api/login", async (req, res) => {
   res.json({ success: true, user: mockUser });
 });
 
+
+
 app.post("/api/trips", (req, res) => {
   const data = req.body;
   console.log(data);
+  addTrip(data);
   res.send("Data received successfully");
 });
-app.get("/api/trips", (req, res) => {
-  const data = req.body;
-  res.send("Get Something");
+
+
+
+app.get("/api/trips/:id", (req, res) => {  
+  const trips=require("./trip.json");
+  const id = req.params.id;
+  if (id) {
+    const trip = trips.find((trip) => trip.tripId === id);
+    if (trip) {
+      res.json(trip);
+    } else {
+      res.status(404).send("Trip not found");
+    }
+   } 
 });
+
+
+
+app.get("/api/trips/", (req, res) => {  
+  const trips=require("./trip.json");
+  const id = req.params.id;   
+     res.json(trips);
+   
+});
+
+
+
 
 // Start the server
 app.listen(port, () => {
   console.log(`Server is running on port ${port}`);
 });
+
+
+
+
+const addTrip=(data)=>{
+const trips=require("./trip.json");
+trips.push(data);
+const updatedTrips=JSON.stringify(trips,null,2);
+fs.writeFileSync("./trip.json",updatedTrips);
+}
