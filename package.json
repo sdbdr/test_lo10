@@ -2,6 +2,11 @@
   "name": "planning_travel",
   "version": "0.1.0",
   "private": true,
+  "main": "no",
+  "engine": {
+    "node": "^14.16.1",
+    "npm": "^6.14.12"
+  },
   "dependencies": {
     "@google/maps": "^1.1.3",
     "@material-ui/core": "^4.12.4",
@@ -14,8 +19,10 @@
     "axios": "^1.4.0",
     "cors": "^2.8.5",
     "express": "^4.18.2",
+    "express-session": "^1.17.3",
     "google-map-react": "^2.2.0",
     "node-cache": "^5.1.2",
+    "prettier": "^2.8.8",
     "react": "^18.2.0",
     "react-bootstrap": "^2.7.4",
     "react-dom": "^18.2.0",
@@ -28,7 +35,10 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "eslint": "eslint src/",
+    "pretiter:check": "prettier --list-different \"{src,}/**/*.{js,less}\" \"docs/**/*.md\"",
+    "prettier": "prettier --write \"{src,}/**/*.{js,less}\" \"docs/**/*.md\""
   },
   "eslintConfig": {
     "extends": [
