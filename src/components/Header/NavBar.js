@@ -4,40 +4,53 @@ import { AppBar, Toolbar, Typography, Box, Button } from "@material-ui/core";
 
 import useStyles from "./styles";
 
-const Navbar = () => {
+const Navbar = ({ onLogout }) => {
   const classes = useStyles();
   return (
-    <AppBar position="static">
-      <Toolbar className={classes.toolbar}>
-        <Typography variant="h5" className={classes.title}>
-          Travel planning
-        </Typography>
-        <Link to="/Trips">
-          <Button>
+    <>
+      <AppBar position="static">
+        <Toolbar className={classes.toolbar}>
+          <Typography variant="h5" className={classes.title}>
+            Travel planning
+          </Typography>
+          <Box display="flex">
+            <Link to="/Trips">
+              <Button>
+                <Typography
+                  variant="h6"
+                  className={classes.title}
+                  style={{ color: "white" }}
+                >
+                  Trips
+                </Typography>
+              </Button>
+            </Link>
+          </Box>
+          <Box display="flex">
+            <Link to="/Research">
+              <Button>
+                <Typography
+                  variant="h6"
+                  className={classes.title}
+                  style={{ color: "white" }}
+                >
+                  Research
+                </Typography>
+              </Button>
+            </Link>
+          </Box>
+          <Button onClick={onLogout}>
             <Typography
               variant="h6"
               className={classes.title}
               style={{ color: "white" }}
             >
-              Trips
+              Log out
             </Typography>
           </Button>
-        </Link>
-        <Box display="flex">
-          <Link to="/Research">
-            <Button>
-              <Typography
-                variant="h6"
-                className={classes.title}
-                style={{ color: "white" }}
-              >
-                Research
-              </Typography>
-            </Button>
-          </Link>
-        </Box>
-      </Toolbar>
-    </AppBar>
+        </Toolbar>
+      </AppBar>
+    </>
   );
 };
 

@@ -18,11 +18,13 @@
     "@testing-library/user-event": "^13.5.0",
     "axios": "^1.4.0",
     "bcrypt": "^5.1.0",
+    "cookie-parser": "^1.4.6",
     "cors": "^2.8.5",
     "express": "^4.18.2",
     "express-session": "^1.17.3",
     "google-map-react": "^2.2.0",
     "node-cache": "^5.1.2",
+    "nodemon": "^2.0.22",
     "prettier": "^2.8.8",
     "react": "^18.2.0",
     "react-bootstrap": "^2.7.4",
@@ -38,8 +40,9 @@
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "eslint": "eslint src/",
-    "pretiter:check": "prettier --list-different \"{src,}/**/*.{js,less}\" \"docs/**/*.md\"",
-    "prettier": "prettier --write \"{src,}/**/*.{js,less}\" \"docs/**/*.md\""
+    "pretiter:check": "prettier --list-different \"{src,backend}/**/*.{js,less}\" \"docs/**/*.md\"",
+    "prettier": "prettier --write \"{src,backend}/**/*.{js,less}\" \"docs/**/*.md\"",
+    "backend": "nodemon backend/server.js"
   },
   "eslintConfig": {
     "extends": [

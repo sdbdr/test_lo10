@@ -3,8 +3,7 @@ import { useLocation } from "react-router-dom";
 import { Card, Col, Row, Form } from "react-bootstrap";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import TripNavBar from "../TripNavBar";
-import Trip_Itinary from "./Trip_Itinary";
-import Trip_Tasks from "./Trip_Tasks";
+
 import { Context } from "../context";
 import { useContext, useEffect } from "react";
 const TripManagement = () => {

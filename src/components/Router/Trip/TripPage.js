@@ -7,7 +7,6 @@ import {
   TextField,
   DialogActions,
   Button,
-  InputLabel,
 } from "@material-ui/core";
 import AddIcon from "@material-ui/icons/Add";
 

@@ -3,7 +3,7 @@ import TripNavBar from "../TripNavBar";
 import { Context } from "../context";
 import { useContext, useEffect } from "react";
 
-const Trip_Itinary = () => {
+const TripItinary = () => {
   const { id, setId } = useContext(Context);
 
   useEffect(() => {
@@ -19,4 +19,4 @@ const Trip_Itinary = () => {
   );
 };
 
-export default Trip_Itinary;
+export default TripItinary;

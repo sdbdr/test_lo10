@@ -3,6 +3,8 @@ import { makeStyles } from "@material-ui/core/styles";
 import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
 
+import { login } from "../../api/travelAdvisorAPI";
+
 const useStyles = makeStyles((theme) => ({
   form: {
     display: "flex",
@@ -19,24 +21,25 @@ function LoginForm({ onLogin }) {
   const classes = useStyles();
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const response = await fetch("http://localhost:8080/api/login", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ username, password }),
-    });
+    const response = await login(username, password);
     const data = await response.json();
+
     if (data.success) {
-      onLogin(data.user);
+      document.cookie = `sessionId=${data.session.sessionId}; path=/;`;
+      onLogin(data.session);
+    } else {
+      setError(data.message);
     }
   };
 
   return (
     <form className={classes.form} onSubmit={handleSubmit}>
+      <h3>Please login!</h3>
+      {error && <div>{error}</div>}
       <TextField
         className={classes.formField}
         label="Username"

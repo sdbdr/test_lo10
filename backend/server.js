@@ -1,10 +1,15 @@
 const bcrypt = require("bcrypt");
 const crypto = require("crypto");
 const express = require("express");
+const cookieParser = require("cookie-parser");
 const session = require("express-session");
 
 const app = express();
 const port = 8080;
+
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+app.use(cookieParser());
 
 const generateSessionSecret = () => {
   return crypto.randomBytes(32).toString("hex");
@@ -16,7 +21,12 @@ app.use(
     secret: generateSessionSecret(),
     resave: false,
     saveUninitialized: true,
-    cookie: { secure: false },
+    cookie: {
+      secure: false, // Set to true if using HTTPS
+      httpOnly: true,
+      sameSite: "strict",
+      maxAge: 3600000, // 1 hour
+    },
   })
 );
 
@@ -31,7 +41,7 @@ const hashPassword = async (password) => {
   const saltRounds = 10;
   const hashedPassword = await bcrypt.hash(password, saltRounds);
   return hashedPassword;
-}
+};
 
 const mockUser = {
   id: 1,
@@ -41,22 +51,40 @@ const mockUser = {
 app.post("/api/login", async (req, res) => {
   const { username, password } = req.body;
   if (username !== mockUser.username) {
-    console.log("Username failed")
     return res
       .status(401)
-      .json({ success: false, message: "Invalid credentials" });
+      .json({ success: false, message: "Invalid username" });
   }
-  
+
   // const passwordMatch = await bcrypt.compare(password, mockUser.password);
-  const passwordMatch = password === mockUser.password;
+  const passwordMatch = mockUser.password === password;
   if (!passwordMatch) {
-    console.log("pass failed")
     return res
       .status(401)
-      .json({ success: false, message: "Invalid credentials" });
+      .json({ success: false, message: "Invalid password" });
   }
-  req.session.userId = mockUser.id;
-  res.json({ success: true, user: mockUser });
+
+  req.session.userId = mockUser.id; // Store the user ID in the session
+  res.cookie("sessionId", req.session.id, {
+    httpOnly: true,
+    secure: false, // Set to true if using HTTPS
+    sameSite: "strict",
+    maxAge: 3600000, // 1 hour
+  });
+  console.log("Session ID:", req.session.id); // Log the session ID
+  // console.log("Session Cookie:", req.cookies.sessionId); // Log the sess
+  res.json({ success: true, session: { sessionId: req.session.id } });
+});
+
+app.post("/api/logout", (req, res) => {
+  req.session.destroy((err) => {
+    if (err) {
+      console.error("Error destroying session:", err);
+    } else {
+      res.clearCookie();
+      res.redirect("http://localhost:3000/");
+    }
+  });
 });
 
 app.post("/api/trips", (req, res) => {

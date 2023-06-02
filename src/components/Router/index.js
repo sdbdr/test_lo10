@@ -5,8 +5,8 @@ import {
   TripManagement,
   TripPage,
   TripNavBar,
-  Trip_Itinary,
-  Trip_Tasks,
+  TripItinary,
+  TripTasks,
 } from "./Trip";
 
 export {
@@ -16,6 +16,6 @@ export {
   TripManagement,
   TripPage,
   TripNavBar,
-  Trip_Itinary,
-  Trip_Tasks,
+  TripItinary,
+  TripTasks,
 };

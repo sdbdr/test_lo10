@@ -44,3 +44,28 @@ export const getWeatherData = async (lat, lng) => {
     console.log(error);
   }
 };
+
+export const login = async (username, password) => {
+  return fetch("http://localhost:8080/api/login", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({ username, password }),
+  });
+};
+
+const deleteSessionCookie = () => {
+  document.cookie =
+    "sessionId=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+};
+
+export const logout = async () => {
+  deleteSessionCookie();
+  return fetch("http://localhost:8080/api/logout", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+  });
+};
