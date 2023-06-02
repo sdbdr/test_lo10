@@ -40,8 +40,8 @@
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "eslint": "eslint src/",
-    "pretiter:check": "prettier --list-different \"{src,backend}/**/*.{js,less}\" \"docs/**/*.md\"",
-    "prettier": "prettier --write \"{src,backend}/**/*.{js,less}\" \"docs/**/*.md\"",
+    "pretiter:check": "prettier --list-different \"{src,backend}/**/*.{js,less,json}\" \"docs/**/*.md\"",
+    "prettier": "prettier --write \"{src,backend}/**/*.{js,less,json}\" \"docs/**/*.md\"",
     "backend": "nodemon backend/server.js"
   },
   "eslintConfig": {
