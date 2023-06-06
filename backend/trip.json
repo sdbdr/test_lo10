@@ -14,6 +14,12 @@
       },
       {
         "name": "Kaykay"
+      },
+      {
+        "name": "Sam"
+      },
+      {
+        "name": "Jhon"
       }
     ],
     "tripPlans": [
@@ -35,6 +41,22 @@
     "description": "descri",
     "budget": "",
     "tripMembers": [],
+    "tripPlans": []
+  },
+  {
+    "tripId": "testingPut",
+    "tripName": "new name2",
+    "startDate": "12-12-12",
+    "endDate": "0222-02-22",
+    "period": null,
+    "city": "",
+    "description": "Put",
+    "budget": "",
+    "tripMembers": [
+      {
+        "name": "Karl"
+      }
+    ],
     "tripPlans": []
   }
 ]

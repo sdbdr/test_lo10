@@ -1,58 +1,69 @@
-import React, { useState } from "react";
-import { useLocation } from "react-router-dom";
-import { Card, Col, Row, Form } from "react-bootstrap";
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import React, { useState, useContext, useEffect } from "react";
+import { useParams } from "react-router-dom";
+import { Card, Col, Row } from "react-bootstrap";
+import { Context } from "../context";
 import TripNavBar from "../TripNavBar";
 
-import { Context } from "../context";
-import { useContext, useEffect } from "react";
 const TripManagement = () => {
-  const { id, setId } = useContext(Context); 
-
+  const { id, setId, trips } = useContext(Context);
+  const [trip, setTrip] = useState(null);
+  const { tripId } = useParams();
 
   useEffect(() => {
-    const storedId = localStorage.getItem("id");
-    setId(storedId);
-  }, [setId]);
+    setId(tripId);
+    localStorage.setItem("id", tripId);
+    const tripFound = trips.find((trip) => trip.tripId === tripId);
+    if (tripFound !== undefined) {
+      setTrip(tripFound);
+    }
+  }, [setId, tripId, trips]);
 
-  
+  useEffect(() => {
+    localStorage.setItem("id", id);
+  }, [id]);
 
   return (
     <div className="Trip_Management">
-      <h1>Paris Trip</h1>
-      <TripNavBar />
+      {trip && (
+        <>
+          <h1>{trip.tripName} Trip</h1>
+          <TripNavBar />
 
-      <div
-        style={{
-          display: "flex",
-          justifyContent: "flex-end",
-          marginRight: "20px",
-          fontSize: "20px",
-        }}
-      >
-        <Card border="primary">
-          <Card.Text style={{ padding: "5px" }}> Code:119 </Card.Text>
-        </Card>
-      </div>
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "flex-end",
+              marginRight: "20px",
+              fontSize: "20px",
+            }}
+          >
+            <Card border="primary">
+              <Card.Text style={{ padding: "5px" }}> Code:119 </Card.Text>
+            </Card>
+          </div>
 
-      <p>Wed, 17 nov...</p>
-      <p>id={id}</p>
-      <br />
+          <p>start Date: {trip.startDate}</p>
+          <p>id={id}</p>
+          <br />
 
-      <Card style={{ width: "100rem" }}>
-        <Row>
-          <Card.Title>Trip Members</Card.Title>
-          <Col xs={6}>
-            <Card.Text> ALex </Card.Text>
-            <Card.Text> Jhon</Card.Text>
-          </Col>
+          <Card style={{ width: "100rem" }}>
+            <Row>
+              <Card.Title>Trip Members</Card.Title>
+              <Col xs={6}>              
+                {trip.tripMembers.map( (member,index)=>{
+                  if(index%2===0) return <Card.Text>{member.name}</Card.Text>
+                  return;}) }
+              </Col>
 
-          <Col xs={6}>
-            <Card.Text> Alane</Card.Text>
-            <Card.Text> james</Card.Text>
-          </Col>
-        </Row>
-      </Card>
+              <Col xs={6}>
+              {trip.tripMembers.map( (member,index)=>{
+                  if(index%2!==0) return <Card.Text>{member.name}</Card.Text>
+                  return;}) }
+              </Col>
+            </Row>
+          </Card>
+        </>
+      )}
     </div>
   );
 };

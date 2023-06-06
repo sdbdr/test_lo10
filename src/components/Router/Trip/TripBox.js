@@ -13,8 +13,8 @@ const TripBox = (props) => {
 
   return (
     <div className="Trip_box">
-      <Link to={"/Trips/Management"}>
-        <Button variant="outline-none"  onClick={()=>localStorage.setItem("id", tripId)}>
+      <Link to={"/Trips/Management/"+tripId}>
+        <Button variant="outline-none" >
           <Card style={{ width: "25rem" }}>
             <Row>
               <Col xs={4} style={{ backgroundColor: "rgba(0, 0, 0, 0.2)" }}>

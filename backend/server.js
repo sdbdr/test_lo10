@@ -98,6 +98,29 @@ app.post("/api/trips", (req, res) => {
 });
 
 
+app.put("/api/trips/:id", (req, res) => {  
+    const trips=require("./trip.json");
+  const id = req.params.id;
+  const data=req.body;
+  if(id){     
+  if(!trips.find((trip) => trip.tripId === id)){         
+    var newTrip={tripId:id,...data}
+    addTrip(newTrip);
+    res.send("Data received successfully");
+  return;
+  }
+}
+  const updatedtrips=trips.map((trip)=>{
+   if(trip.tripId===id) {
+      return {tripId:id,...data};
+  } 
+  return trip; 
+ }) 
+ updateTrips(updatedtrips);
+ res.send("Data updated successfully");
+
+});
+
 
 app.get("/api/trips/:id", (req, res) => {  
   const trips=require("./trip.json");
@@ -137,4 +160,15 @@ const trips=require("./trip.json");
 trips.push(data);
 const updatedTrips=JSON.stringify(trips,null,2);
 fs.writeFileSync("./trip.json",updatedTrips);
+}
+
+const updateTrips=(updatedTrips)=>{
+  const trips=JSON.stringify(updatedTrips,null,2);
+  fs.writeFile('./trip.json', trips, (err) => {
+    if (err) {
+      console.error('Error writing to trip.json:', err);
+    } else {
+      console.log('Trips data updated and written to trip.json:');      
+    }
+  });
 }

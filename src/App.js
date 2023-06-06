@@ -49,7 +49,7 @@ const App = () => {
             <Routes>
               <Route path="/research" element={<ResearchPage />} />
               <Route path="/Trips" element={<TripPage />} />
-              <Route path="/Trips/Management" element={<TripManagement />} />
+              <Route path="/Trips/Management/:tripId" element={<TripManagement />} />
               <Route path="/Trips/Itinary" element={<TripItinary />} />
               <Route path="/Trips/Tasks" element={<TripTasks />} />
             </Routes>
