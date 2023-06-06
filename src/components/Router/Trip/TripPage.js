@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import {
   Fab,
   Dialog,
@@ -11,6 +11,7 @@ import {
 import AddIcon from "@material-ui/icons/Add";
 
 import TripBox from "./TripBox";
+import { Context } from "./context";
 
 const data = {
   id: 24,
@@ -26,6 +27,32 @@ const TripPage = () => {
   const [startDate, setStartDate] = useState("");
   const [endDate, setEndDate] = useState("");
   const [description, setDescription] = useState("");
+  const [trips, setTrips] = useState([]);
+  const { userId } = useContext(Context);
+
+  useEffect(() => {
+    if (userId) {
+      fetchTripsFromUserId(userId)
+        .then((trips) => setTrips(trips))
+        .catch((err) => console.log(err));
+    }
+  }, [userId]);
+
+  const fetchTripsFromUserId = async (userId) => {
+    const response = await fetch("http://localhost:8080/api/trips");
+    const trips = await response.json();
+    const tripsOfUser = [];
+    trips.forEach((trip) => {
+      const isFound = trip.tripMembers.find(
+        (user) => parseInt(user.id) === parseInt(userId)
+      );
+      if (isFound) {
+        tripsOfUser.push(trip);
+      }
+    });
+    console.log("Trip of users", tripsOfUser);
+    return tripsOfUser;
+  };
 
   const openDialog = () => {
     setIsOpen(true);
@@ -98,7 +125,9 @@ const TripPage = () => {
   return (
     <div className="Trips">
       {/* TripBox component */}
-      <TripBox trip={data} />
+      {trips.map((trip, id) => (
+        <TripBox key={id} trip={trip} />
+      ))}
 
       {/* Round "+" button */}
       <Fab

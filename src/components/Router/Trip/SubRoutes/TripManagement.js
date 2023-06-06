@@ -7,21 +7,34 @@ import TripNavBar from "../TripNavBar";
 import { Context } from "../context";
 import { useContext, useEffect } from "react";
 const TripManagement = () => {
+  const [trip, setTrip] = useState({});
   const { id, setId } = useContext(Context);
 
   const location = useLocation();
-  var queryParams = new URLSearchParams(location.search);
-  var id_URL = queryParams.get("id");
+  const queryParams = new URLSearchParams(location.search);
+  const idURL = queryParams.get("id");
+
+  const fetchTrip = async (tripId) => {
+    const response = await fetch(`http://localhost:8080/api/trips/${tripId}`);
+    const trip = await response.json();
+    console.log("TRIP", trip);
+
+    return trip;
+  };
 
   useEffect(() => {
-    if (/^\d+$/.test(id_URL) && parseInt(id_URL) >= 0) {
-      setId(id_URL);
+    fetchTrip(idURL)
+      .then((trip) => setTrip(trip))
+      .catch((err) => console.log(err));
+
+    if (/^\d+$/.test(idURL) && parseInt(idURL) >= 0) {
+      setId(idURL);
     } else if (localStorage.getItem("id") !== "null") {
       setId(localStorage.getItem("id"));
     } else {
       setId("");
     }
-  }, [id_URL]);
+  }, [idURL]);
 
   useEffect(() => {
     localStorage.setItem("id", id);
@@ -32,7 +45,7 @@ const TripManagement = () => {
 
   return (
     <div className="Trip_Management">
-      <h1>Paris Trip</h1>
+      <h1>{trip.description}</h1>
       <TripNavBar />
 
       <div
@@ -48,8 +61,10 @@ const TripManagement = () => {
         </Card>
       </div>
 
-      <p>Wed, 17 nov...</p>
-      <p>id={id}</p>
+      <p>
+        <b>From:</b> {trip.startDate} <b>to</b> {trip.endDate} ({trip.period}{" "}
+        days)
+      </p>
       <br />
 
       <Card style={{ width: "100rem" }}>

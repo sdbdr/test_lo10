@@ -39,11 +39,6 @@ app.use(cors());
 
 // Define a route to handle the incoming data
 // testuser : password123
-const mockUser = {
-  id: 5,
-  username: "testuser",
-  password: "password123", // -> need to hash password: 'password123', but to simplify the things, just let it like this
-};
 app.post("/api/login", async (req, res) => {
   const { username, password } = req.body;
   fs.readFile(`${__dirname}/users.json`, "utf8", (err, data) => {
@@ -75,10 +70,13 @@ app.post("/api/login", async (req, res) => {
       sameSite: "strict",
       maxAge: 3600000, // 1 hour
     });
-    res.json({ success: true, session: { sessionId: req.session.id } });
+    res.json({
+      success: true,
+      session: { sessionId: req.session.id },
+      userId: user.id,
+    });
   });
 });
-
 
 app.post("/api/logout", (req, res) => {
   req.session.destroy((err) => {
@@ -135,7 +133,7 @@ app.post("/api/trip", (req, res) => {
 });
 
 app.get("/api/trips", (req, res) => {
-  fs.readFile("./trip.json", "utf8", (err, data) => {
+  fs.readFile(`${__dirname}/trip.json`, "utf8", (err, data) => {
     if (err) {
       console.error(err);
       return res.status(500).send({ error: "Error reading trip.json" });
@@ -146,16 +144,16 @@ app.get("/api/trips", (req, res) => {
 });
 
 app.get("/api/trips/:id", (req, res) => {
-  fs.readFile("./trip.json", "utf8", (err, data) => {
+  fs.readFile(`${__dirname}/trip.json`, "utf8", (err, data) => {
     if (err) {
       console.error(err);
-      return res.status(500).send({ error: "Error reading trip.json" });
+      return res.status(500).send({ error: "Error reading trip.json " + err });
     }
 
     const trips = JSON.parse(data);
     const id = req.params.id;
     if (id) {
-      const trip = trips.find((trip) => trip.tripId === id);
+      const trip = trips.find((trip) => parseInt(trip.tripId) === parseInt(id));
       if (trip) {
         res.json(trip);
       } else {

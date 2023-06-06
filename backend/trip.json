@@ -10,14 +10,21 @@
     "budget": 500,
     "tripMembers": [
       {
+        "id": 1,
         "name": "Audrey",
         "email": "audrey@example.com",
         "invited": false
       },
       {
+        "id": 2,
         "name": "Kaykay",
         "email": "kaykay@example.com",
         "invited": false
+      },
+      {
+        "id": 5,
+        "name": "testuser",
+        "email": "testuser.doe@example.com"
       }
     ],
     "tripPlans": [
@@ -29,5 +36,37 @@
       }
     ],
     "invitationLink": "http://localhost:3000/invite?code=abc123"
+  },
+  {
+    "tripId": 2,
+    "tripName": "Finland",
+    "startDate": "2023-07-20",
+    "endDate": "2023-07-22",
+    "period": 7,
+    "city": "Finland",
+    "description": "Voyage à Finland",
+    "budget": 500,
+    "tripMembers": [
+      {
+        "id": 1,
+        "name": "Audrey",
+        "email": "audrey@example.com",
+        "invited": false
+      },
+      {
+        "id": 5,
+        "name": "testuser",
+        "email": "testuser.doe@example.com"
+      }
+    ],
+    "tripPlans": [
+      {
+        "lat": "40.738840",
+        "lng": "-19.357570",
+        "type": "activity",
+        "date": "2023-07-21"
+      }
+    ],
+    "invitationLink": "http://localhost:3000/invite?code=abc456"
   }
 ]
