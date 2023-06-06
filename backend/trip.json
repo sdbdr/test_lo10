@@ -1,6 +1,6 @@
 [
   {
-    "tripId": "1",
+    "tripId": 1,
     "tripName": "Lisbonne",
     "startDate": "2023-06-20",
     "endDate": "2023-06-27",
@@ -10,16 +10,21 @@
     "budget": 500,
     "tripMembers": [
       {
-        "name": "Audrey"
+        "id": 1,
+        "name": "Audrey",
+        "email": "audrey@example.com",
+        "invited": false
       },
       {
-        "name": "Kaykay"
+        "id": 2,
+        "name": "Kaykay",
+        "email": "kaykay@example.com",
+        "invited": false
       },
       {
-        "name": "Sam"
-      },
-      {
-        "name": "Jhon"
+        "id": 5,
+        "name": "testuser",
+        "email": "testuser.doe@example.com"
       }
     ],
     "tripPlans": [
@@ -29,34 +34,39 @@
         "type": "activity",
         "date": "2023-06-21"
       }
-    ]
+    ],
+    "invitationLink": "http://localhost:3000/invite?code=abc123"
   },
   {
-    "tripId": "lvlql",
-    "tripName": "test",
-    "startDate": "0111-11-11",
-    "endDate": "0222-02-22",
-    "period": null,
-    "city": "",
-    "description": "descri",
-    "budget": "",
-    "tripMembers": [],
-    "tripPlans": []
-  },
-  {
-    "tripId": "testingPut",
-    "tripName": "new name2",
-    "startDate": "12-12-12",
-    "endDate": "0222-02-22",
-    "period": null,
-    "city": "",
-    "description": "Put",
-    "budget": "",
+    "tripId": 2,
+    "tripName": "Finland",
+    "startDate": "2023-07-20",
+    "endDate": "2023-07-22",
+    "period": 7,
+    "city": "Finland",
+    "description": "Voyage à Finland",
+    "budget": 500,
     "tripMembers": [
       {
-        "name": "Karl"
+        "id": 1,
+        "name": "Audrey",
+        "email": "audrey@example.com",
+        "invited": false
+      },
+      {
+        "id": 5,
+        "name": "testuser",
+        "email": "testuser.doe@example.com"
       }
     ],
-    "tripPlans": []
+    "tripPlans": [
+      {
+        "lat": "40.738840",
+        "lng": "-19.357570",
+        "type": "activity",
+        "date": "2023-07-21"
+      }
+    ],
+    "invitationLink": "http://localhost:3000/invite?code=abc456"
   }
 ]

@@ -1,6 +1,6 @@
 import { createContext, useState, useEffect } from "react";
 
-export const Context = createContext(null);
+export const Context = createContext();
 
 const initialize = () => {
   return fetch("http://localhost:8080/api/trips")

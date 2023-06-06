@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 
 import LoginForm from "./components/Login/LoginForm";
-import { ContextProvider } from "./components/Router/Trip/context";
+import { Context, ContextProvider } from "./components/Router/Trip/context";
 import NavBar from "./components/Header/NavBar";
 import {
   ResearchPage,
@@ -60,7 +60,9 @@ const App = () => {
   } else {
     return (
       <div>
-        <LoginForm onLogin={handleLogin} />
+        <ContextProvider>
+          <LoginForm onLogin={handleLogin} />
+        </ContextProvider>
       </div>
     );
   }

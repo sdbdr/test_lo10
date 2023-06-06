@@ -1,9 +1,10 @@
-import React, { useState } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
 
 import { login } from "../../api/travelAdvisorAPI";
+import { Context, ContextProvider } from "../Router/Trip/context";
 
 const useStyles = makeStyles((theme) => ({
   form: {
@@ -22,6 +23,7 @@ function LoginForm({ onLogin }) {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
+  const { userId, setUserId } = useContext(Context);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -31,10 +33,19 @@ function LoginForm({ onLogin }) {
     if (data.success) {
       document.cookie = `sessionId=${data.session.sessionId}; path=/;`;
       onLogin(data.session);
+      setUserId(data.userId);
+      localStorage.setItem("userId", JSON.stringify(data.userId));
     } else {
       setError(data.message);
     }
   };
+
+  useEffect(() => {
+    const storedUserId = localStorage.getItem("userId");
+    if (storedUserId) {
+      setUserId(JSON.parse(storedUserId));
+    }
+  }, [setUserId]);
 
   return (
     <form className={classes.form} onSubmit={handleSubmit}>
