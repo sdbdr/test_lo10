@@ -4,7 +4,7 @@ const crypto = require("crypto");
 const express = require("express");
 const cookieParser = require("cookie-parser");
 const session = require("express-session");
-const fs = require('fs');
+
 
 const app = express();
 const port = 8080;
@@ -92,12 +92,12 @@ app.post("/api/logout", (req, res) => {
 
 
 
-app.post("/api/trips", (req, res) => {
-  const data = req.body;
-  console.log(data);
-  addTrip(data);
-  res.send("Data received successfully");
-});
+// app.post("/api/trips", (req, res) => {
+//   const data = req.body;
+//   console.log(data);
+//   addTrip(data);
+//   res.send("Data received successfully");
+// });
 
 
 app.put("/api/trips/:id", (req, res) => {  
@@ -120,16 +120,14 @@ app.put("/api/trips/:id", (req, res) => {
  }) 
  updateTrips(updatedtrips);
  res.send("Data updated successfully");
-
+});
 /**
  * API for trip's data
  */
-app.post("/api/trip", (req, res) => {
-  const { tripName, startDate, endDate, period, city, description, budget } =
-    req.body;
-
-  const tripId = generateTripId();
-  const invitationLink = `https://localhost:3000/invite?code=${generateInvitationCode()}`;
+app.post("/api/trips", (req, res) => {
+  const { tripId,tripName, startDate, endDate, period, city, description, budget } =
+    req.body;      
+  const invitationLink = `http://localhost:3000/invite?code=${generateInvitationCode()}`;
   const newTrip = {
     tripId,
     tripName,
@@ -139,7 +137,11 @@ app.post("/api/trip", (req, res) => {
     city,
     description,
     budget,
-    tripMembers: [],
+    tripMembers: [{// à remplacer par l'utilisateur logged in, l'utilisateur qui crée un trip est un membre du trip.
+      "id": 5,
+      "name": "testuser",
+      "email": "testuser.doe@example.com"
+    }],
     invitationLink,
   };
 
@@ -152,19 +154,18 @@ app.post("/api/trip", (req, res) => {
     const trips = JSON.parse(data);
     trips.push(newTrip);
 
-    fs.writeFile(`${__dirname}/trip.json`, JSON.stringify(trips), (err) => {
+    fs.writeFile(`${__dirname}/trip.json`, JSON.stringify(trips,null,2), (err) => {
       if (err) {
         console.error(err);
         return res.status(500).send({ error: "Error writing to trip.json" });
-      }
-      res.send({ tripId });
+      }     
     });
   });
   console.log(newTrip);
   res.send("Data received successfully");
 });
 
-app.get("/api/trips", (req, res) => {
+app.get("/api/trips", (req, res) => {  
   fs.readFile(`${__dirname}/trip.json`, "utf8", (err, data) => {
     if (err) {
       console.error(err);
@@ -185,7 +186,7 @@ app.get("/api/trips/:id", (req, res) => {
     const trips = JSON.parse(data);
     const id = req.params.id;
     if (id) {
-      const trip = trips.find((trip) => parseInt(trip.tripId) === parseInt(id));
+      const trip = trips.find((trip) => trip.tripId === id);
       if (trip) {
         res.json(trip);
       } else {

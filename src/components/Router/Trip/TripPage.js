@@ -11,7 +11,7 @@ import {
 import AddIcon from "@material-ui/icons/Add";
 import { Context } from "./context";
 import TripBox from "./TripBox";
-import { Context } from "./context";
+
 
 
 
@@ -21,33 +21,12 @@ const TripPage = () => {
   const [title, setTitle] = useState("");
   const [startDate, setStartDate] = useState("");
   const [endDate, setEndDate] = useState("");
-  const [description, setDescription] = useState("");
-  const [trips, setTrips] = useState([]);
-  const { userId } = useContext(Context);
+  const [description, setDescription] = useState("");  
+  const { refresh } = useContext(Context);
 
-  useEffect(() => {
-    if (userId) {
-      fetchTripsFromUserId(userId)
-        .then((trips) => setTrips(trips))
-        .catch((err) => console.log(err));
-    }
-  }, [userId]);
 
-  const fetchTripsFromUserId = async (userId) => {
-    const response = await fetch("http://localhost:8080/api/trips");
-    const trips = await response.json();
-    const tripsOfUser = [];
-    trips.forEach((trip) => {
-      const isFound = trip.tripMembers.find(
-        (user) => parseInt(user.id) === parseInt(userId)
-      );
-      if (isFound) {
-        tripsOfUser.push(trip);
-      }
-    });
-    console.log("Trip of users", tripsOfUser);
-    return tripsOfUser;
-  };
+
+  
 
   const { trips} = useContext(Context);
 
@@ -108,6 +87,7 @@ const TripPage = () => {
       .then((response) => {
         if (response.ok) {
           console.log(response.text());
+          refresh();
         } else {
           // Handle errors
           throw new Error("POST request failed");
@@ -124,8 +104,8 @@ const TripPage = () => {
       {/* TripBox component */}              
     
       {/* <TripBox trip={data} /> */}
-     {trips.map((trip)=>{
-       return <TripBox {...trip}/>
+     {trips.map((trip,id)=>{
+       return <TripBox key={id} {...trip}/>
      })}
       {/* Round "+" button */}
       <Fab

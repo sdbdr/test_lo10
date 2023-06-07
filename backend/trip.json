@@ -1,6 +1,6 @@
 [
   {
-    "tripId": 1,
+    "tripId": "1",
     "tripName": "Lisbonne",
     "startDate": "2023-06-20",
     "endDate": "2023-06-27",
@@ -38,7 +38,7 @@
     "invitationLink": "http://localhost:3000/invite?code=abc123"
   },
   {
-    "tripId": 2,
+    "tripId": "2",
     "tripName": "Finland",
     "startDate": "2023-07-20",
     "endDate": "2023-07-22",
@@ -70,3 +70,6 @@
     "invitationLink": "http://localhost:3000/invite?code=abc456"
   }
 ]
+
+
+

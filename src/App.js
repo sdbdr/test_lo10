@@ -50,8 +50,8 @@ const App = () => {
               <Route path="/research" element={<ResearchPage />} />
               <Route path="/Trips" element={<TripPage />} />
               <Route path="/Trips/Management/:tripId" element={<TripManagement />} />
-              <Route path="/Trips/Itinary" element={<TripItinary />} />
-              <Route path="/Trips/Tasks" element={<TripTasks />} />
+              <Route path="/Trips/Itinary/:tripId" element={<TripItinary />} />
+              <Route path="/Trips/Tasks/:tripId" element={<TripTasks />} />
             </Routes>
           </Router>
         </ContextProvider>

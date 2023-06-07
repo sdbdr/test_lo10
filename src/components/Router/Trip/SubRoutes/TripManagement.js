@@ -8,26 +8,27 @@ const TripManagement = () => {
   const { id, setId, trips } = useContext(Context);
   const [trip, setTrip] = useState(null);
   const { tripId } = useParams();
-
+  
   useEffect(() => {
-    setId(tripId);
-    localStorage.setItem("id", tripId);
+    setId(tripId);    
     const tripFound = trips.find((trip) => trip.tripId === tripId);
     if (tripFound !== undefined) {
       setTrip(tripFound);
     }
   }, [setId, tripId, trips]);
 
-  useEffect(() => {
-    localStorage.setItem("id", id);
-  }, [id]);
+  
+
+  
+  
+
 
   return (
     <div className="Trip_Management">
       {trip && (
         <>
           <h1>{trip.tripName} Trip</h1>
-          <TripNavBar />
+          <TripNavBar id={id} />
 
           <div
             style={{
