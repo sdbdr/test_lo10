@@ -2,9 +2,6 @@ import { createContext, useState, useEffect } from "react";
 
 export const Context = createContext();
 
-
-
-
 export const ContextProvider = (props) => {
   const [id, setId] = useState();
   const [trips, setTrips] = useState([]);
@@ -23,7 +20,7 @@ export const ContextProvider = (props) => {
         .catch((err) => console.log(err));
     }
   }, [userId]);
-  
+
   const fetchTripsFromUserId = async (userId) => {
     const response = await fetch("http://localhost:8080/api/trips");
     const trips = await response.json();

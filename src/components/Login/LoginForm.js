@@ -4,7 +4,7 @@ import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
 
 import { login } from "../../api/travelAdvisorAPI";
-import { Context, ContextProvider } from "../Router/Trip/context";
+import { Context } from "../Router/Trip/context";
 
 const useStyles = makeStyles((theme) => ({
   form: {
@@ -18,7 +18,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-function LoginForm({ onLogin }) {
+const LoginForm = ({ onLogin }) => {
   const classes = useStyles();
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
@@ -33,17 +33,19 @@ function LoginForm({ onLogin }) {
     if (data.success) {
       document.cookie = `sessionId=${data.session.sessionId}; path=/;`;
       onLogin(data.session);
-      setUserId(data.userId);
-      localStorage.setItem("userId", JSON.stringify(data.userId));
+      setUserId(data.user.id);
+      localStorage.setItem("user", JSON.stringify(data.user));
+      // localStorage.setItem("userId", JSON.stringify(data.userId));
     } else {
       setError(data.message);
     }
   };
 
   useEffect(() => {
-    const storedUserId = localStorage.getItem("userId");
-    if (storedUserId) {
-      setUserId(JSON.parse(storedUserId));
+    const storedUser = JSON.parse(localStorage.getItem("user"));
+    console.log(storedUser);
+    if (storedUser) {
+      setUserId(storedUser.id);
     }
   }, [setUserId]);
 
@@ -76,6 +78,6 @@ function LoginForm({ onLogin }) {
       </Button>
     </form>
   );
-}
+};
 
 export default LoginForm;

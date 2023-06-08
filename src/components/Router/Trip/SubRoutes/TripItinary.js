@@ -8,20 +8,23 @@ const TripItinary = () => {
   const { id, setId, trips } = useContext(Context);
   const [trip, setTrip] = useState(null);
   const { tripId } = useParams();
-  
+
   useEffect(() => {
-    setId(tripId);    
+    setId(tripId);
     const tripFound = trips.find((trip) => trip.tripId === tripId);
     if (tripFound !== undefined) {
       setTrip(tripFound);
     }
-  }, [setId, tripId,trips]);
+  }, [setId, tripId, trips]);
 
   return (
-    <div>{trip &&( <>
-      <p>itinary of trip:{trip.tripName}</p>
-      <TripNavBar id={id}/>
-      </>)}
+    <div className="container">
+      {trip && (
+        <>
+          <p>itinary of trip:{trip.tripName}</p>
+          <TripNavBar id={id} />
+        </>
+      )}
     </div>
   );
 };

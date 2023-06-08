@@ -8,26 +8,20 @@ const TripManagement = () => {
   const { id, setId, trips } = useContext(Context);
   const [trip, setTrip] = useState(null);
   const { tripId } = useParams();
-  
+
   useEffect(() => {
-    setId(tripId);    
+    setId(tripId);
     const tripFound = trips.find((trip) => trip.tripId === tripId);
     if (tripFound !== undefined) {
       setTrip(tripFound);
     }
   }, [setId, tripId, trips]);
 
-  
-
-  
-  
-
-
   return (
-    <div className="Trip_Management">
+    <div className="container trip-management">
       {trip && (
         <>
-          <h1>{trip.tripName} Trip</h1>
+          <h1>{trip.tripName}</h1>
           <TripNavBar id={id} />
 
           <div
@@ -43,23 +37,27 @@ const TripManagement = () => {
             </Card>
           </div>
 
-          <p>start Date: {trip.startDate}</p>
+          <p>Start date: {trip.startDate}</p>
           <p>id={id}</p>
           <br />
 
           <Card style={{ width: "100rem" }}>
             <Row>
               <Card.Title>Trip Members</Card.Title>
-              <Col xs={6}>              
-                {trip.tripMembers.map( (member,index)=>{
-                  if(index%2===0) return <Card.Text>{member.name}</Card.Text>
-                  return;}) }
+              <Col xs={6}>
+                {trip.tripMembers.map((member, index) => {
+                  if (index % 2 === 0)
+                    return <Card.Text>{member.name}</Card.Text>;
+                  return;
+                })}
               </Col>
 
               <Col xs={6}>
-              {trip.tripMembers.map( (member,index)=>{
-                  if(index%2!==0) return <Card.Text>{member.name}</Card.Text>
-                  return;}) }
+                {trip.tripMembers.map((member, index) => {
+                  if (index % 2 !== 0)
+                    return <Card.Text>{member.name}</Card.Text>;
+                  return;
+                })}
               </Col>
             </Row>
           </Card>

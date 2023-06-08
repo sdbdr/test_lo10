@@ -9,26 +9,20 @@ import {
   Button,
 } from "@material-ui/core";
 import AddIcon from "@material-ui/icons/Add";
+
 import { Context } from "./context";
 import TripBox from "./TripBox";
-
-
-
-
+import { getPeriod } from "../../../utils/formatDate";
 
 const TripPage = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [title, setTitle] = useState("");
   const [startDate, setStartDate] = useState("");
   const [endDate, setEndDate] = useState("");
-  const [description, setDescription] = useState("");  
+  const [description, setDescription] = useState("");
   const { refresh } = useContext(Context);
 
-
-
-  
-
-  const { trips} = useContext(Context);
+  const { trips } = useContext(Context);
 
   const openDialog = () => {
     setIsOpen(true);
@@ -61,18 +55,13 @@ const TripPage = () => {
       tripName: title,
       startDate,
       endDate,
-      period: startDate - endDate, // You can define a function to calculate the period in days
+      period: getPeriod(startDate, endDate), // You can define a function to calculate the period in days
       city: "", // Replace with the actual city
       description,
       budget: "", // Set an initial budget value or replace with the actual budget
-      tripMembers: [], // Add the members dynamically as needed
+      tripMembers: [JSON.parse(localStorage.getItem("user"))], // Add the members dynamically as needed
       tripPlans: [], // Add the plans dynamically as needed
     };
-
-    // Save the new trip to local storage
-    // const trips = JSON.parse(localStorage.getItem("trips")) || [];
-    // trips.push(newTrip);
-    // localStorage.setItem("trips", JSON.stringify(trips));
 
     closeDialog();
 
@@ -100,13 +89,12 @@ const TripPage = () => {
   };
 
   return (
-    <div className="Trips">
-      {/* TripBox component */}              
-    
-      {/* <TripBox trip={data} /> */}
-     {trips.map((trip,id)=>{
-       return <TripBox key={id} {...trip}/>
-     })}
+    <div className="container trips">
+      {/* TripBox component */}
+      {trips.map((trip, id) => {
+        return <TripBox key={id} {...trip} />;
+      })}
+
       {/* Round "+" button */}
       <Fab
         color="primary"

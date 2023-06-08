@@ -7,6 +7,7 @@ import {
   TripNavBar,
   TripItinary,
   TripTasks,
+  InvitationLink,
 } from "./Trip";
 
 export {
@@ -18,4 +19,5 @@ export {
   TripNavBar,
   TripItinary,
   TripTasks,
+  InvitationLink,
 };

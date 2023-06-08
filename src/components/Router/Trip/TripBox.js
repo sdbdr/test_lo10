@@ -5,16 +5,13 @@ import { Button } from "react-bootstrap";
 import { useContext } from "react";
 import { Context } from "./context";
 
-
 const TripBox = (props) => {
-  
-  const {tripName,tripId,description,subtitle,period}=props;
- 
+  const { tripName, tripId, description, subtitle, period } = props;
 
   return (
     <div className="Trip_box">
-      <Link to={"/Trips/Management/"+tripId}>
-        <Button variant="outline-none" >
+      <Link to={"/Trips/Management/" + tripId}>
+        <Button variant="outline-none">
           <Card style={{ width: "25rem" }}>
             <Row>
               <Col xs={4} style={{ backgroundColor: "rgba(0, 0, 0, 0.2)" }}>
@@ -32,9 +29,7 @@ const TripBox = (props) => {
                 <br />
                 <br />
                 <br />
-                <Card.Text className="mb-2 text-muted">
-                  {period}
-                </Card.Text>
+                <Card.Text className="mb-2 text-muted">{period} days</Card.Text>
               </Col>
             </Row>
           </Card>

@@ -10,6 +10,7 @@ import {
   TripManagement,
   TripTasks,
   TripItinary,
+  InvitationLink,
 } from "./components/Router";
 import { logout } from "./api/travelAdvisorAPI";
 
@@ -49,9 +50,13 @@ const App = () => {
             <Routes>
               <Route path="/research" element={<ResearchPage />} />
               <Route path="/Trips" element={<TripPage />} />
-              <Route path="/Trips/Management/:tripId" element={<TripManagement />} />
+              <Route
+                path="/Trips/Management/:tripId"
+                element={<TripManagement />}
+              />
               <Route path="/Trips/Itinary/:tripId" element={<TripItinary />} />
               <Route path="/Trips/Tasks/:tripId" element={<TripTasks />} />
+              <Route path="/invite/:code" component={InvitationLink} />
             </Routes>
           </Router>
         </ContextProvider>
