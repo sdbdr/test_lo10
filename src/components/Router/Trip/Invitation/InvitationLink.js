@@ -1,12 +1,25 @@
 import React, { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useLocation } from "react-router-dom";
+import { makeStyles } from "@material-ui/core/styles";
 import { TextField, Button } from "@material-ui/core";
 
+const useStyles = makeStyles((theme) => ({
+  btnField: {
+    margin: theme.spacing(2),
+  },
+}));
+
 const InvitationLink = (props) => {
-  const { code } = useParams();
+  const classes = useStyles();
+  const location = useLocation();
+  const searchParams = new URLSearchParams(location.search);
+  const code = searchParams.get("code");
+  console.log("code", code)
+
   const [trip, setTrip] = useState(null);
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("")
   const [isLoading, setIsLoading] = useState(true);
   const [isSubmitted, setIsSubmitted] = useState(false);
 
@@ -29,16 +42,20 @@ const InvitationLink = (props) => {
       });
   }, [code]);
 
-  const handleNameChange = (event) => {
-    setName(event.target.value);
+  const handleNameChange = (e) => {
+    setName(e.target.value);
   };
 
-  const handleEmailChange = (event) => {
-    setEmail(event.target.value);
+  const handleEmailChange = (e) => {
+    setEmail(e.target.value);
   };
+  
+  const handlePasswordChange = (e) => {
+    setPassword(e.target.value)
+  }
 
-  const handleSubmit = (event) => {
-    event.preventDefault();
+  const handleSubmit = (e) => {
+    e.preventDefault();
 
     const user = {
       name,
@@ -75,11 +92,12 @@ const InvitationLink = (props) => {
   }
 
   return (
-    <div>
-      <h2>Join Trip: {trip.tripName}</h2>
+    <div className="container mt-3">
+      {/* <h2>Join Trip: {trip.tripName}</h2> */}
+      <h2>Join Trip: </h2>
       <form onSubmit={handleSubmit}>
         <TextField
-          label="Name"
+          label="Username"
           fullWidth
           value={name}
           onChange={handleNameChange}
@@ -90,9 +108,20 @@ const InvitationLink = (props) => {
           value={email}
           onChange={handleEmailChange}
         />
-        <Button type="submit" color="primary">
-          Join
-        </Button>
+        <TextField
+          label="Password"
+          fullWidth
+          value={password}
+          onChange={handlePasswordChange}
+        />
+       <Button
+        className={classes.btnField}
+        variant="contained"
+        color="primary"
+        type="submit"
+      >
+        Join
+      </Button>
       </form>
     </div>
   );

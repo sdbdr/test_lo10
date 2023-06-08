@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 
-import LoginForm from "./components/Login/LoginForm";
 import { Context, ContextProvider } from "./components/Router/Trip/context";
+import LoginForm from "./components/Login/LoginForm";
+import WelcomePage from "./components/WelcomePage";
 import NavBar from "./components/Header/NavBar";
 import {
   ResearchPage,
@@ -48,6 +49,7 @@ const App = () => {
           <Router>
             <NavBar onLogout={handleLogout} />
             <Routes>
+              <Route path="/" element={<WelcomePage />} />
               <Route path="/research" element={<ResearchPage />} />
               <Route path="/Trips" element={<TripPage />} />
               <Route
@@ -56,7 +58,7 @@ const App = () => {
               />
               <Route path="/Trips/Itinary/:tripId" element={<TripItinary />} />
               <Route path="/Trips/Tasks/:tripId" element={<TripTasks />} />
-              <Route path="/invite/:code" component={InvitationLink} />
+              <Route path="/invite" element={<InvitationLink />} />
             </Routes>
           </Router>
         </ContextProvider>

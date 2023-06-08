@@ -35,7 +35,6 @@ const LoginForm = ({ onLogin }) => {
       onLogin(data.session);
       setUserId(data.user.id);
       localStorage.setItem("user", JSON.stringify(data.user));
-      // localStorage.setItem("userId", JSON.stringify(data.userId));
     } else {
       setError(data.message);
     }
@@ -43,7 +42,6 @@ const LoginForm = ({ onLogin }) => {
 
   useEffect(() => {
     const storedUser = JSON.parse(localStorage.getItem("user"));
-    console.log(storedUser);
     if (storedUser) {
       setUserId(storedUser.id);
     }
