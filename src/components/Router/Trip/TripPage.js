@@ -59,16 +59,17 @@ const TripPage = () => {
       city: "", // Replace with the actual city
       description,
       budget: "", // Set an initial budget value or replace with the actual budget
-      tripMembers: [JSON.parse(localStorage.getItem("user"))], // Add the members dynamically as needed
+      tripMembers: [], 
       tripPlans: [], // Add the plans dynamically as needed
     };
 
     closeDialog();
-
+    const sessionId=document.cookie.valueOf("sessionId").split("=")[1];
     const option = {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
+        'Authorization': sessionId
       },
       body: JSON.stringify(newTrip),
     };

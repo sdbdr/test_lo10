@@ -22,19 +22,16 @@ export const ContextProvider = (props) => {
   }, [userId]);
 
   const fetchTripsFromUserId = async (userId) => {
-    const response = await fetch("http://localhost:8080/api/trips");
+    const sessionId=document.cookie.valueOf("sessionId").split("=")[1];
+    const response = await fetch("http://localhost:8080/api/trips", {
+      method: 'GET',
+      headers: {
+        'Authorization': sessionId // Include the session ID in the Authorization header
+         }
+      });
     const trips = await response.json();
-    const tripsOfUser = [];
-    trips.forEach((trip) => {
-      const isFound = trip.tripMembers.find(
-        (user) => parseInt(user.id) === parseInt(userId)
-      );
-      if (isFound) {
-        tripsOfUser.push(trip);
-      }
-    });
-    console.log("Trip of users", tripsOfUser);
-    return tripsOfUser;
+    console.log("Trip of users", trips);
+    return trips;
   };
 
   const refresh = () => {

@@ -7,7 +7,7 @@ const session = require("express-session");
 
 const app = express();
 const port = 8080;
-
+var activeSessions={};
 /**
  * Authentication
  */
@@ -37,6 +37,8 @@ app.use(
 const cors = require("cors");
 app.use(cors());
 
+
+
 // Authentication route: Define a route to handle the incoming data
 app.post("/api/login", async (req, res) => {
   const { username, password } = req.body;
@@ -64,7 +66,8 @@ app.post("/api/login", async (req, res) => {
 
     // Set the user ID cookie
     res.cookie("userId", user.id, { maxAge: 3600000 });
-
+    
+    activeSessions[req.session.id]=user.id;  
     // req.session.userId = user.id; // Store the user ID in the session (not persistance)
     req.session.userId = user.id; // Store the user ID in the session
     res.json({
@@ -76,7 +79,8 @@ app.post("/api/login", async (req, res) => {
   });
 });
 
-app.post("/api/logout", (req, res) => {
+app.post("/api/logout", (req, res) => {  
+  if (activeSessions.hasOwnProperty(req.body.id)) delete activeSessions[req.body.id]  
   req.session.destroy((err) => {
     if (err) {
       console.error("Error destroying session:", err);
@@ -87,6 +91,19 @@ app.post("/api/logout", (req, res) => {
   });
 });
 
+
+const Authorization=(req,res,next)=>{  
+  const sessionId=req.headers.authorization;
+  if(!sessionId){
+    return res.status(401).json({ error: 'No session ID provided' });
+  }
+  const userId=activeSessions[sessionId];
+  if (!userId) {
+    return res.status(401).json({ error: 'Unauthorized' });
+  }
+  req.userId=userId
+  next();
+  }
 // Trip route
 app.put("/api/trips/:id", (req, res) => {
   const trips = require("./trip.json");
@@ -110,7 +127,7 @@ app.put("/api/trips/:id", (req, res) => {
   res.send("Data updated successfully");
 });
 
-app.post("/api/trips", (req, res) => {
+app.post("/api/trips", Authorization, (req, res) => {
   const {
     tripId,
     tripName,
@@ -124,7 +141,12 @@ app.post("/api/trips", (req, res) => {
   } = req.body;
 
   // Get the logged-in user's information from the session or authentication token
-
+  var userId=req.userId;
+  const users=require(`${__dirname}/users.json`);
+  var foundUser=users.find((user)=>user.id===userId);
+  var {id, name, email }=foundUser;
+  var user={id, name, email,invited:false }
+  
   fs.readFile(`${__dirname}/trip.json`, "utf8", (err, data) => {
     if (err) {
       console.error(err);
@@ -132,6 +154,7 @@ app.post("/api/trips", (req, res) => {
     }
 
     const invitationLink = `http://localhost:3000/invite?code=${generateInvitationCode()}`;
+    tripMembers.push(user)
     const newTrip = {
       tripId,
       tripName,
@@ -145,7 +168,7 @@ app.post("/api/trips", (req, res) => {
       invitationLink,
     };
     console.log("new trip", newTrip);
-
+      
     const trips = JSON.parse(data);
     trips.push(newTrip);
 
@@ -164,14 +187,26 @@ app.post("/api/trips", (req, res) => {
   res.send("Data received successfully");
 });
 
-app.get("/api/trips", (req, res) => {
+
+
+
+app.get("/api/trips", Authorization, (req, res) => {
   fs.readFile(`${__dirname}/trip.json`, "utf8", (err, data) => {
     if (err) {
       console.error(err);
       return res.status(500).send({ error: "Error reading trip.json" });
-    }
+    }    
     const trips = JSON.parse(data);
-    res.send(trips);
+    const tripsOfUser = [];
+    trips.forEach((trip) => {
+      const isFound = trip.tripMembers.find(
+        (user) => parseInt(user.id) === parseInt(req.userId)
+      );
+      if (isFound) {
+        tripsOfUser.push(trip);
+      }
+    });
+    res.send(tripsOfUser);
   });
 });
 

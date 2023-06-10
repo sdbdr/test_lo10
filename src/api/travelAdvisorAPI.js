@@ -63,11 +63,13 @@ const deleteSessionCookie = () => {
 };
 
 export const logout = async () => {
+  var session={id:document.cookie.valueOf("sessionId").split("=")[1]}  
   deleteSessionCookie();
   return fetch("http://localhost:8080/api/logout", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
     },
+     body: JSON.stringify(session),    
   });
 };
