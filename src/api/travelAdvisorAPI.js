@@ -71,3 +71,19 @@ export const logout = async () => {
     },
   });
 };
+
+export const fetchTripsFromUserId = async (userId) => {
+  const response = await fetch("http://localhost:8080/api/trips");
+  const trips = await response.json();
+  const tripsOfUser = [];
+  trips.forEach((trip) => {
+    const isFound = trip.tripMembers.find(
+      (user) => parseInt(user.id) === parseInt(userId)
+    );
+    if (isFound) {
+      tripsOfUser.push(trip);
+    }
+  });
+  console.log("Trip of users", tripsOfUser);
+  return tripsOfUser;
+};

@@ -31,9 +31,9 @@ const LoginForm = ({ onLogin }) => {
     const data = await response.json();
 
     if (data.success) {
+      setUserId(data.user.id);
       document.cookie = `sessionId=${data.session.sessionId}; path=/;`;
       onLogin(data.session);
-      setUserId(data.user.id);
       localStorage.setItem("user", JSON.stringify(data.user));
     } else {
       setError(data.message);

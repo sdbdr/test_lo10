@@ -50,11 +50,11 @@ const InvitationLink = (props) => {
           };
           fetch(`http://localhost:8080/api/trips/${trip.tripId}`, options)
             .then((response) => {
+              refresh();
               return response.json();
             })
             .then((data) => {
               console.log("Trip updated successfully:", data);
-              refresh();
               return data;
             })
             .catch((error) => {

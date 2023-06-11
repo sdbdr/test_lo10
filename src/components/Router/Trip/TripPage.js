@@ -20,9 +20,7 @@ const TripPage = () => {
   const [startDate, setStartDate] = useState("");
   const [endDate, setEndDate] = useState("");
   const [description, setDescription] = useState("");
-  const { refresh } = useContext(Context);
-
-  const { trips } = useContext(Context);
+  const { trips, refresh } = useContext(Context);
 
   const openDialog = () => {
     setIsOpen(true);
