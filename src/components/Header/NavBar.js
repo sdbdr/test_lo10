@@ -6,6 +6,7 @@ import useStyles from "./styles";
 
 const Navbar = ({ onLogout }) => {
   const classes = useStyles();
+
   return (
     <>
       <AppBar position="static">

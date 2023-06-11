@@ -88,6 +88,24 @@ app.post("/api/logout", (req, res) => {
 });
 
 // Trip route
+const addTrip = (data) => {
+  const trips = require("./trip.json");
+  trips.push(data);
+  const updatedTrips = JSON.stringify(trips, null, 2);
+  fs.writeFileSync("./trip.json", updatedTrips);
+};
+
+const updateTrips = (updatedTrips) => {
+  const trips = JSON.stringify(updatedTrips, null, 2);
+  fs.writeFile(`${__dirname}/trip.json`, trips, (err) => {
+    if (err) {
+      console.error("Error writing to trip.json:", err);
+    } else {
+      console.log("Trips data updated and written to trip.json:");
+    }
+  });
+};
+
 app.put("/api/trips/:id", (req, res) => {
   const trips = require("./trip.json");
   const id = req.params.id;
@@ -100,14 +118,14 @@ app.put("/api/trips/:id", (req, res) => {
       return;
     }
   }
-  const updatedtrips = trips.map((trip) => {
+  const updatedTrips = trips.map((trip) => {
     if (trip.tripId === id) {
       return { tripId: id, ...data };
     }
     return trip;
   });
-  updateTrips(updatedtrips);
-  res.send("Data updated successfully");
+  updateTrips(updatedTrips);
+  res.send(updatedTrips);
 });
 
 app.post("/api/trips", (req, res) => {
@@ -289,65 +307,6 @@ app.get("/api/trips/:tripId/invite/:code", (req, res) => {
 
 app.post("/api/trips/:tripId/accept-invitation", (req, res) => {
   const { tripId } = req.params;
-  const { username, password } = req.body;
-
-  fs.readFile("users.json", "utf8", (err, data) => {
-    if (err) {
-      console.error(err);
-      return res.status(500).send({ error: "Error reading users.json" });
-    }
-
-    const users = JSON.parse(data);
-    const user = users.find((user) => user.username === username);
-
-    if (!user || !bcrypt.compareSync(password, user.password)) {
-      return res.status(401).send({ error: "Invalid username or password" });
-    }
-
-    fs.readFile(`${__dirname}/trip.json`, "utf8", (err, data) => {
-      if (err) {
-        console.error(err);
-        return res.status(500).send({ error: "Error reading trip.json" });
-      }
-
-      const trips = JSON.parse(data);
-      const tripIndex = trips.findIndex(
-        (trip) => trip.tripId === parseInt(tripId)
-      );
-
-      if (tripIndex === -1) {
-        return res
-          .status(404)
-          .send({ error: `Trip with ID ${tripId} not found` });
-      }
-
-      const tripMembers = trips[tripIndex].tripMembers;
-      const existingMember = tripMembers.find(
-        (member) => member.email === user.email
-      );
-
-      if (existingMember) {
-        return res.status(400).send({
-          error: `User with email ${user.email} is already a trip member`,
-        });
-      }
-
-      tripMembers.push({ name: user.name, email: user.email, invited: false });
-      trips[tripIndex].tripMembers = tripMembers;
-
-      fs.writeFile(`${__dirname}/trip.json`, JSON.stringify(trips), (err) => {
-        if (err) {
-          console.error(err);
-          return res.status(500).send({ error: "Error writing to trip.json" });
-        }
-        res.send({ message: `User ${user.name} added to trip ${tripId}` });
-      });
-    });
-  });
-});
-
-app.post("/api/trips/:tripId/accept-invitation", (req, res) => {
-  const { tripId } = req.params;
   const { code, username, password } = req.body;
 
   fs.readFile(`${__dirname}/users.json`, "utf8", (err, data) => {
@@ -422,21 +381,3 @@ app.post("/api/trips/:tripId/accept-invitation", (req, res) => {
 app.listen(port, () => {
   console.log(`Server is running on port ${port}`);
 });
-
-const addTrip = (data) => {
-  const trips = require("./trip.json");
-  trips.push(data);
-  const updatedTrips = JSON.stringify(trips, null, 2);
-  fs.writeFileSync("./trip.json", updatedTrips);
-};
-
-const updateTrips = (updatedTrips) => {
-  const trips = JSON.stringify(updatedTrips, null, 2);
-  fs.writeFile("./trip.json", trips, (err) => {
-    if (err) {
-      console.error("Error writing to trip.json:", err);
-    } else {
-      console.log("Trips data updated and written to trip.json:");
-    }
-  });
-};

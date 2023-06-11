@@ -39,13 +39,28 @@ export const ContextProvider = (props) => {
 
   const refresh = () => {
     if (userId) {
+      console.log("REFRESH");
       fetchTripsFromUserId(userId)
         .then((trips) => setTrips(trips))
         .catch((err) => console.log(err));
     }
   };
 
-  const contextValue = { id, setId, trips, refresh, userId, setUserId };
+  const resetContext = () => {
+    setId(null);
+    setTrips(null);
+    setUserId(null);
+  };
+
+  const contextValue = {
+    id,
+    setId,
+    userId,
+    setUserId,
+    trips,
+    refresh,
+    resetContext,
+  };
 
   return (
     <Context.Provider value={contextValue}>{props.children}</Context.Provider>

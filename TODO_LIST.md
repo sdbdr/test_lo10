@@ -4,3 +4,8 @@
 * Add a "Welcome page" for app
 * From Map page, add a button to add / create a list of trip for collaboration
 * Database's architecture
+
+
+## Remark
+* The code is too bullshit, need to re-organise and set the code's convention (...f)
+* For now user's login info is stored in localStorage and we need to avoid that because of the leak of sensitive personal datas -> Hash this info or restructure infras

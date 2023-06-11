@@ -1,0 +1,99 @@
+[
+  {
+    "tripId": "1",
+    "tripName": "Lisbonne",
+    "startDate": "2023-06-20",
+    "endDate": "2023-06-27",
+    "period": 7,
+    "city": "Lisbonne",
+    "description": "Voyage à Lisbonne",
+    "budget": 500,
+    "tripMembers": [
+      {
+        "id": 1,
+        "name": "Audrey",
+        "email": "audrey@example.com",
+        "invited": false
+      },
+      {
+        "id": 2,
+        "name": "Kaykay",
+        "email": "kaykay@example.com",
+        "invited": false
+      },
+      {
+        "id": 5,
+        "name": "testuser",
+        "email": "testuser.doe@example.com"
+      }
+    ],
+    "tripPlans": [
+      {
+        "lat": "38.738840",
+        "lng": "-9.357570",
+        "type": "activity",
+        "date": "2023-06-21"
+      }
+    ],
+    "invitationLink": "http://localhost:3000/invite?code=abc123"
+  },
+  {
+    "tripId": "2",
+    "tripName": "Finland",
+    "startDate": "2023-07-20",
+    "endDate": "2023-07-22",
+    "period": 7,
+    "city": "Finland",
+    "description": "Voyage à Finland",
+    "budget": 500,
+    "tripMembers": [
+      {
+        "id": 1,
+        "name": "Audrey",
+        "email": "audrey@example.com",
+        "invited": false
+      },
+      {
+        "id": 5,
+        "name": "testuser",
+        "email": "testuser.doe@example.com"
+      }
+    ],
+    "tripPlans": [
+      {
+        "lat": "40.738840",
+        "lng": "-19.357570",
+        "type": "activity",
+        "date": "2023-07-21"
+      }
+    ],
+    "invitationLink": "http://localhost:3000/invite?code=abc456"
+  },
+  {
+    "tripId": "54g0e",
+    "tripName": "Road trip to Thailand",
+    "startDate": "2023-06-09",
+    "endDate": "2023-07-09",
+    "period": 30,
+    "city": "",
+    "description": "Summer vacation",
+    "budget": "",
+    "tripMembers": [
+      {
+        "id": 5,
+        "username": "testuser",
+        "password": "password123",
+        "name": "testuser",
+        "email": "testuser.doe@example.com"
+      },
+      {
+        "id": 2,
+        "username": "Kaykay",
+        "password": "1",
+        "name": "Kaykay",
+        "email": "jane.doe@example.com"
+      }
+    ],
+    "invitationLink": "http://localhost:3000/invite?code=Sj9bjyVz"
+  }
+]
