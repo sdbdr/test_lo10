@@ -19,10 +19,10 @@ const TripTasks = () => {
   return (
     <div className="container">
       {trip && (
-        <>
-          <p>Tasks of trip:{trip.tripName}</p>
+        <div className="mt-3 mb-3">
           <TripNavBar id={id} />
-        </>
+          <h4>Tasks of trip: {trip.tripName}</h4>
+        </div>
       )}
     </div>
   );

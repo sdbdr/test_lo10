@@ -1,4 +1,4 @@
-import React, { useState, useEffect, createRef } from "react";
+import React, { useState, useEffect, createRef, useContext } from "react";
 import {
   CircularProgress,
   Grid,
@@ -17,6 +17,7 @@ import {
 
 import PlaceDetails from "../PlaceDetails/PlaceDetails";
 import useStyles from "./styles.js";
+import { Context } from "../Router/Trip/context";
 
 const List = ({ places, type, setType, rating, setRating, isLoading }) => {
   const [elRefs, setElRefs] = useState([]);
@@ -27,6 +28,7 @@ const List = ({ places, type, setType, rating, setRating, isLoading }) => {
   const [selectedEndDate, setSelectedEndDate] = useState(null);
   const [childClicked, setChildClicked] = useState(null);
   const classes = useStyles();
+  const { refresh, trips } = useContext(Context);
 
   const handleClick = (index) => {
     setChildClicked(index);
@@ -45,23 +47,12 @@ const List = ({ places, type, setType, rating, setRating, isLoading }) => {
     setSelectedDate(null);
   };
 
-  const printLocalStorage = () => {
-    const localStorageData = localStorage.getItem("trips");
-    if (localStorageData) {
-      const parsedData = JSON.parse(localStorageData);
-      const jsonStr = JSON.stringify(parsedData, null, 2);
-      console.log(jsonStr);
-    } else {
-      console.log("Local storage is empty.");
-    }
-  };
-
   const handleFormSubmit = (e) => {
     e.preventDefault();
     console.log("Nom du voyage :", tripName);
     console.log("Date sélectionnée :", selectedDate);
 
-    const tripsFromStorage = JSON.parse(localStorage.getItem("trips")) || [];
+    const tripsFromStorage = trips || [];
     const selectedTrip = tripsFromStorage.find(
       (trip) => trip.tripName === tripName
     );
@@ -75,30 +66,48 @@ const List = ({ places, type, setType, rating, setRating, isLoading }) => {
           lat: selectedPlace.latitude,
           lng: selectedPlace.longitude,
         };
-        console.log("Coordonnées de l'élément sélectionné :", coordinates);
+        console.log("Place sélectionnée :", selectedPlace);
 
         const newTripPlan = {
           tripName: tripName,
           tripDate: selectedDate,
           lat: selectedPlace.latitude,
           lng: selectedPlace.longitude,
+          category: selectedPlace.category.name,
+          name: selectedPlace.name,
+          rating: selectedPlace.rating,
+          photo: selectedPlace.photo
+            ? selectedPlace.photo.images.large.url
+            : "https://www.foodserviceandhospitality.com/wp-content/uploads/2016/09/Restaurant-Placeholder-001.jpg",
         };
 
-        const updatedTrips = tripsFromStorage.map((trip) => {
-          if (trip.tripId === tripId) {
-            return {
-              ...trip,
-              tripPlans: [...trip.tripPlans, newTripPlan],
-            };
-          }
-          return trip;
+        const trip = tripsFromStorage.find((trip) => {
+          return trip.tripId === tripId;
         });
+        const updatedTrip = trip
+          ? { ...trip, tripPlans: [...trip.tripPlans, newTripPlan] }
+          : {};
 
-        localStorage.setItem("trips", JSON.stringify(updatedTrips));
+        const options = {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(updatedTrip),
+        };
+        fetch(`http://localhost:8080/api/trips/${updatedTrip.tripId}`, options)
+          .then((response) => {
+            refresh();
+            return response.json();
+          })
+          .then((data) => {
+            return data;
+          })
+          .catch((error) => {
+            console.error(error);
+          });
       }
     }
-
-    printLocalStorage();
 
     setOpenDialog(false);
     setTripName("");
@@ -112,7 +121,7 @@ const List = ({ places, type, setType, rating, setRating, isLoading }) => {
         .map((_, i) => refs[i] || createRef())
     );
 
-    const tripsFromStorage = JSON.parse(localStorage.getItem("trips")) || [];
+    const tripsFromStorage = trips || [];
     const tripNames = tripsFromStorage.map((trip) => trip.tripName);
     setTripNamesFromStorage(tripNames);
   }, [places]);
@@ -121,7 +130,7 @@ const List = ({ places, type, setType, rating, setRating, isLoading }) => {
     const selectedTripName = event.target.value;
     setTripName(selectedTripName);
 
-    const tripsFromStorage = JSON.parse(localStorage.getItem("trips")) || [];
+    const tripsFromStorage = trips || [];
     const selectedTrip = tripsFromStorage.find(
       (trip) => trip.tripName === selectedTripName
     );

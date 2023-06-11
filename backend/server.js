@@ -139,6 +139,7 @@ app.post("/api/trips", (req, res) => {
     description,
     budget,
     tripMembers,
+    tripPlans,
   } = req.body;
 
   // Get the logged-in user's information from the session or authentication token
@@ -160,6 +161,7 @@ app.post("/api/trips", (req, res) => {
       description,
       budget,
       tripMembers,
+      tripPlans,
       invitationLink,
     };
     console.log("new trip", newTrip);
@@ -302,78 +304,6 @@ app.get("/api/trips/:tripId/invite/:code", (req, res) => {
     }
 
     res.send({ tripId, invitationCode: code });
-  });
-});
-
-app.post("/api/trips/:tripId/accept-invitation", (req, res) => {
-  const { tripId } = req.params;
-  const { code, username, password } = req.body;
-
-  fs.readFile(`${__dirname}/users.json`, "utf8", (err, data) => {
-    if (err) {
-      console.error(err);
-      return res.status(500).send({ error: "Error reading users.json" });
-    }
-
-    const users = JSON.parse(data);
-    const user = users.find((user) => user.username === username);
-
-    if (!user || !bcrypt.compareSync(password, user.password)) {
-      return res.status(401).send({ error: "Invalid username or password" });
-    }
-
-    fs.readFile(`${__dirname}/trip.json`, "utf8", (err, data) => {
-      if (err) {
-        console.error(err);
-        return res.status(500).send({ error: "Error reading trip.json" });
-      }
-
-      const trips = JSON.parse(data);
-      const tripIndex = trips.findIndex(
-        (trip) => trip.tripId === parseInt(tripId)
-      );
-
-      if (tripIndex === -1) {
-        return res
-          .status(404)
-          .send({ error: `Trip with ID ${tripId} not found` });
-      }
-
-      const invitationLinks = trips[tripIndex].invitationLinks || [];
-      const invitation = invitationLinks.find((invitation) =>
-        invitation.link.includes(code)
-      );
-
-      if (!invitation) {
-        return res
-          .status(400)
-          .send({ error: `Invitation with code ${code} not found` });
-      }
-
-      const tripMembers = trips[tripIndex].tripMembers;
-      const existingMember = tripMembers.find(
-        (member) => member.email === user.email
-      );
-
-      if (existingMember) {
-        return res.status(400).send({
-          error: `User with email ${user.email} is already a trip member`,
-        });
-      }
-
-      tripMembers.push({ name: user.name, email: user.email, invited: false });
-      trips[tripIndex].tripMembers = tripMembers;
-      invitationLinks.splice(invitationLinks.indexOf(invitation), 1);
-      trips[tripIndex].invitationLinks = invitationLinks;
-
-      fs.writeFile(`${__dirname}/trip.json`, JSON.stringify(trips), (err) => {
-        if (err) {
-          console.error(err);
-          return res.status(500).send({ error: "Error writing to trip.json" });
-        }
-        res.send({ message: `User ${user.name} added to trip ${tripId}` });
-      });
-    });
   });
 });
 
