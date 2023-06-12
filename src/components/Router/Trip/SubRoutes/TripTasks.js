@@ -139,14 +139,14 @@ const TripTasks = () => {
           <h4>Tasks of trip: {trip.tripName}</h4>
           <div className="row">
             <div className="col-6">
-              {trip.tripTasks.map((task, id) => {
+              {trip?.tripTasks.map((task, id) => {
                 if (id % 2 === 0) return <Task key={id} task={task} />;
                 return null;
               })}
             </div>
 
             <div className="col-6">
-              {trip.tripTasks.map((task, id) => {
+              {trip?.tripTasks.map((task, id) => {
                 if (id % 2 === 1) return <Task key={id} task={task} />;
                 return null;
               })}

@@ -35,6 +35,7 @@
         "date": "2023-06-21"
       }
     ],
+    "tripTasks": [],
     "invitationLink": "http://localhost:3000/invite?code=abc123"
   },
   {
@@ -67,6 +68,7 @@
         "date": "2023-07-21"
       }
     ],
+    "tripTasks": [],
     "invitationLink": "http://localhost:3000/invite?code=abc456"
   }
 ]
