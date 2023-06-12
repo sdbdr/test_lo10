@@ -73,7 +73,7 @@ const List = ({ places, type, setType, rating, setRating, isLoading }) => {
           tripDate: selectedDate,
           lat: selectedPlace.latitude,
           lng: selectedPlace.longitude,
-          category: selectedPlace.category.name,
+          category: selectedPlace.category?.name,
           name: selectedPlace.name,
           rating: selectedPlace.rating,
           photo: selectedPlace.photo

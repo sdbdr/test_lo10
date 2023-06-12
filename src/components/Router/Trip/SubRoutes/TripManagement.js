@@ -1,6 +1,7 @@
 import React, { useState, useContext, useEffect } from "react";
 import { useParams } from "react-router-dom";
-import { Card, Col, Row } from "react-bootstrap";
+// import { Card } from "react-bootstrap";
+import { Avatar, Card, CardContent, Chip, Typography } from "@material-ui/core";
 
 import { Context } from "../context";
 import TripNavBar from "../TripNavBar";
@@ -34,19 +35,21 @@ const TripManagement = () => {
             }}
           >
             <Card border="primary">
-              <Card.Text style={{ padding: "5px" }}>
+              <CardContent style={{ padding: "5px", }}>
                 {" "}
                 Code: {new URL(trip.invitationLink).searchParams.get(
                   "code"
                 )}{" "}
-              </Card.Text>
+              </CardContent>
             </Card>
           </div>
 
           <Card className="mb-4" style={{ padding: "20px" }}>
-            <Card.Body>
-              <Card.Title>Basic informations</Card.Title>
-              <Card.Text>
+            <CardContent>
+              <Typography gutterBottom variant="h5" component="h2">
+                Basic informations
+              </Typography>
+              <Typography>
                 <div>
                   <b>Start date: </b>
                   {new Date(trip.startDate).toDateString()}
@@ -63,18 +66,27 @@ const TripManagement = () => {
                   <b>Invitation link: </b>
                   {trip.invitationLink}
                 </div>
-              </Card.Text>
-            </Card.Body>
+              </Typography>
+            </CardContent>
           </Card>
 
           <Card className="mb-4" style={{ padding: "20px" }}>
-            <Card.Body>
-              <Card.Title>Trip Members</Card.Title>
+            <CardContent>
+              <Typography gutterBottom variant="h5" component="h2">
+                Trip members
+              </Typography>
               <div className="row">
                 <div className="col-6">
                   {trip.tripMembers.map((member, index) => {
                     if (index % 2 === 0)
-                      return <Card.Text>{member.name}</Card.Text>;
+                      return (
+                        <Chip
+                          avatar={
+                            <Avatar>{member.name[0].toUpperCase()}</Avatar>
+                          }
+                          label={member.name}
+                        />
+                      );
                     return null;
                   })}
                 </div>
@@ -82,12 +94,19 @@ const TripManagement = () => {
                 <div className="col-6">
                   {trip.tripMembers.map((member, index) => {
                     if (index % 2 !== 0)
-                      return <Card.Text>{member.name}</Card.Text>;
+                      return (
+                        <Chip
+                          avatar={
+                            <Avatar>{member.name[0].toUpperCase()}</Avatar>
+                          }
+                          label={member.name}
+                        />
+                      );
                     return null;
                   })}
                 </div>
               </div>
-            </Card.Body>
+            </CardContent>
           </Card>
         </div>
       )}

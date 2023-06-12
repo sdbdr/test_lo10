@@ -28,7 +28,6 @@ const Task = ({ task }) => {
   return (
     <div className="mt-4">
       <Card>
-        <cardMedia></cardMedia>
         <CardContent>
           <Typography gutterBottom variant="h5" component="h2">
             {task.taskName}
@@ -142,12 +141,14 @@ const TripTasks = () => {
             <div className="col-6">
               {trip.tripTasks.map((task, id) => {
                 if (id % 2 === 0) return <Task key={id} task={task} />;
+                return null;
               })}
             </div>
 
             <div className="col-6">
               {trip.tripTasks.map((task, id) => {
                 if (id % 2 === 1) return <Task key={id} task={task} />;
+                return null;
               })}
             </div>
           </div>
@@ -181,7 +182,7 @@ const TripTasks = () => {
               value={memberName}
               onChange={handleMemberNameChange}
             >
-              <MenuItem value="">Select a trip</MenuItem>
+              <MenuItem value="">Select a member</MenuItem>
               {members?.map((name, index) => (
                 <MenuItem key={index} value={name}>
                   {name}
