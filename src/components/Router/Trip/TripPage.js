@@ -59,6 +59,7 @@ const TripPage = () => {
       budget: "", // Set an initial budget value or replace with the actual budget
       tripMembers: [JSON.parse(localStorage.getItem("user"))], // Add the members dynamically as needed
       tripPlans: [], // Add the plans dynamically as needed
+      tripTasks: [],
     };
 
     closeDialog();

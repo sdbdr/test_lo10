@@ -68,26 +68,26 @@ const TripManagement = () => {
           </Card>
 
           <Card className="mb-4" style={{ padding: "20px" }}>
-            <Row>
-              <Card.Body>
-                <Card.Title>Trip Members</Card.Title>
-                <Col xs={6}>
+            <Card.Body>
+              <Card.Title>Trip Members</Card.Title>
+              <div className="row">
+                <div className="col-6">
                   {trip.tripMembers.map((member, index) => {
                     if (index % 2 === 0)
                       return <Card.Text>{member.name}</Card.Text>;
-                    return;
+                    return null;
                   })}
-                </Col>
+                </div>
 
-                <Col xs={6}>
+                <div className="col-6">
                   {trip.tripMembers.map((member, index) => {
                     if (index % 2 !== 0)
                       return <Card.Text>{member.name}</Card.Text>;
-                    return;
+                    return null;
                   })}
-                </Col>
-              </Card.Body>
-            </Row>
+                </div>
+              </div>
+            </Card.Body>
           </Card>
         </div>
       )}

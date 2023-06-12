@@ -140,6 +140,7 @@ app.post("/api/trips", (req, res) => {
     budget,
     tripMembers,
     tripPlans,
+    tripTasks,
   } = req.body;
 
   // Get the logged-in user's information from the session or authentication token
@@ -162,6 +163,7 @@ app.post("/api/trips", (req, res) => {
       budget,
       tripMembers,
       tripPlans,
+      tripTasks,
       invitationLink,
     };
     console.log("new trip", newTrip);
