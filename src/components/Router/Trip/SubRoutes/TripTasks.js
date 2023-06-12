@@ -3,32 +3,60 @@ import { Context } from "../context";
 import { useContext, useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import {
-  Fab,
+  Avatar,
+  Button,
+  Card,
+  CardContent,
+  Chip,
   Dialog,
   DialogTitle,
   DialogContent,
-  TextField,
   DialogActions,
-  Button,
+  TextField,
+  Fab,
   InputLabel,
   MenuItem,
   FormControl,
   Select,
+  Typography,
 } from "@material-ui/core";
 import AddIcon from "@material-ui/icons/Add";
 
 import TripNavBar from "../TripNavBar";
 
+const Task = ({ task }) => {
+  return (
+    <div className="mt-4">
+      <Card>
+        <cardMedia></cardMedia>
+        <CardContent>
+          <Typography gutterBottom variant="h5" component="h2">
+            {task.taskName}
+          </Typography>
+          <Typography variant="body2" color="text.secondary">
+            {task.description}
+          </Typography>
+          <Typography>
+            <Chip
+              avatar={<Avatar>{task.tagMember[0].toUpperCase()}</Avatar>}
+              label={task.tagMember}
+            />
+          </Typography>
+        </CardContent>
+      </Card>
+    </div>
+  );
+};
+
 const TripTasks = () => {
-  const { id, setId, trips } = useContext(Context);
+  const { id, setId, trips, refresh } = useContext(Context);
   const { tripId } = useParams();
   const [trip, setTrip] = useState(null);
   const [isOpen, setIsOpen] = useState(false);
-  const [task, setTask] = useState("");
+  const [taskName, setTaskName] = useState("");
   const [members, setMembers] = useState([]);
   const [memberName, setMemberName] = useState("");
   const [description, setDescription] = useState("");
-  const [tripTasksFromStorage, setTripTasksFromStorage] = useState([]);
 
   useEffect(() => {
     setId(tripId);
@@ -58,8 +86,50 @@ const TripTasks = () => {
     setMemberName(selectedMember);
   };
 
+  const handleTaskChange = (e) => {
+    setTaskName(e.target.value);
+  };
+
+  const handleDescriptionChange = (e) => {
+    setDescription(e.target.value);
+  };
+
+  const handleAddTask = (e) => {
+    const newTask = {
+      taskName,
+      tagMember: memberName,
+      description,
+    };
+
+    const updatedTrip = trip
+      ? { ...trip, tripTasks: [...trip.tripTasks, newTask] }
+      : {};
+
+    const options = {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(updatedTrip),
+    };
+    fetch(`http://localhost:8080/api/trips/${tripId}`, options)
+      .then((response) => {
+        refresh();
+        return response.json();
+      })
+      .then((data) => {
+        return data;
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+
+    closeDialog();
+  };
+
   const handleFormSubmit = (e) => {
     e.preventDefault();
+    handleAddTask();
   };
 
   return (
@@ -68,6 +138,19 @@ const TripTasks = () => {
         <div className="mt-3 mb-3">
           <TripNavBar id={id} />
           <h4>Tasks of trip: {trip.tripName}</h4>
+          <div className="row">
+            <div className="col-6">
+              {trip.tripTasks.map((task, id) => {
+                if (id % 2 === 0) return <Task key={id} task={task} />;
+              })}
+            </div>
+
+            <div className="col-6">
+              {trip.tripTasks.map((task, id) => {
+                if (id % 2 === 1) return <Task key={id} task={task} />;
+              })}
+            </div>
+          </div>
         </div>
       )}
 
@@ -87,8 +170,8 @@ const TripTasks = () => {
           <TextField
             label="Task name"
             fullWidth
-            value={task}
-            // onChange={handleTitleChange}
+            value={taskName}
+            onChange={handleTaskChange}
           />
 
           <FormControl fullWidth>
@@ -112,8 +195,8 @@ const TripTasks = () => {
             multiline
             rows={4}
             fullWidth
-            // value={description}
-            // onChange={handleDescriptionChange}
+            value={description}
+            onChange={handleDescriptionChange}
           />
           {/* Add more text fields for other trip details */}
         </DialogContent>
@@ -121,7 +204,9 @@ const TripTasks = () => {
           <Button onClick={closeDialog} color="primary">
             Cancel
           </Button>
-          <Button color="primary">Add</Button>
+          <Button onClick={handleFormSubmit} color="primary">
+            Add
+          </Button>
         </DialogActions>
       </Dialog>
     </div>
