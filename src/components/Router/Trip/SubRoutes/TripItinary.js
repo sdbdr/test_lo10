@@ -152,7 +152,6 @@ const Polyline = ({ path, options }) => (
 );
 
 const TripItinaryContent = ({ places }) => {
-  const { trips } = useContext(Context);
   const classes = useStyles();
 
   return (

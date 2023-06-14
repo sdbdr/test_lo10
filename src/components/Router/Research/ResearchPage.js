@@ -54,7 +54,7 @@ const ResearchPage = () => {
     const data = await getWeatherData(lat, lng);
     console.log(data);
     setWeatherData(data);
-  });
+  }, []);
 
   useEffect(() => {
     navigator.geolocation.getCurrentPosition(
@@ -68,7 +68,7 @@ const ResearchPage = () => {
     const filtered = places.filter((place) => Number(place.rating) > rating);
 
     setFilteredPlaces(filtered);
-  }, [rating]);
+  }, [rating, places]);
 
   useEffect(() => {
     if (bounds) {
