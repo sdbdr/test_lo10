@@ -70,7 +70,7 @@ const TripTasks = () => {
     const tripMembers = tripOfUser?.tripMembers.map((member) => member.name);
 
     setMembers(tripMembers);
-  }, [trips, tripId]);
+  }, [trips]);
 
   const openDialog = () => {
     setIsOpen(true);

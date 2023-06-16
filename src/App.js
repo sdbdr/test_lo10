@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 
-import { ContextProvider } from "./components/Router/Trip/context";
+import { Context, ContextProvider } from "./components/Router/Trip/context";
 import LoginForm from "./components/Login/LoginForm";
 import WelcomePage from "./components/WelcomePage";
 import NavBar from "./components/Header/NavBar";
@@ -31,7 +31,7 @@ const App = () => {
       }
     };
     checkAuthentication();
-  }, [session]);
+  }, []);
 
   const handleLogin = (session) => {
     setSession(session);

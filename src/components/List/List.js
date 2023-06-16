@@ -62,6 +62,10 @@ const List = ({ places, type, setType, rating, setRating, isLoading }) => {
 
       const selectedPlace = places[childClicked];
       if (selectedPlace) {
+        const coordinates = {
+          lat: selectedPlace.latitude,
+          lng: selectedPlace.longitude,
+        };
         console.log("Place sélectionnée :", selectedPlace);
 
         const newTripPlan = {

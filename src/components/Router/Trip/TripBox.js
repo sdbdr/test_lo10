@@ -2,6 +2,8 @@ import React from "react";
 import { Card, Col, Row } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import { Button } from "react-bootstrap";
+import { useContext } from "react";
+import { Context } from "./context";
 
 const TripBox = (props) => {
   const { tripName, tripId, description, subtitle, period } = props;

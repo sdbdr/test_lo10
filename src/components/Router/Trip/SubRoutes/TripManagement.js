@@ -35,7 +35,7 @@ const TripManagement = () => {
             }}
           >
             <Card border="primary">
-              <CardContent style={{ padding: "5px", }}>
+              <CardContent style={{ padding: "5px" }}>
                 {" "}
                 Code: {new URL(trip.invitationLink).searchParams.get(
                   "code"

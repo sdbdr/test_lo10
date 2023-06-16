@@ -23,7 +23,7 @@ const LoginForm = ({ onLogin }) => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
-  const { setUserId } = useContext(Context);
+  const { userId, setUserId } = useContext(Context);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
