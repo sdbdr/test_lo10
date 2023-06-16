@@ -4,9 +4,13 @@ const crypto = require("crypto");
 const express = require("express");
 const cookieParser = require("cookie-parser");
 const session = require("express-session");
+const yaml = require("yamljs");
+const swaggerUi = require("swagger-ui-express");
 
 const UserController = require(`${__dirname}/controllers/UserController`);
 const TripController = require(`${__dirname}/controllers/TripController`);
+
+const openApiSpec = yaml.load(`${__dirname}/openapi.yaml`);
 
 const app = express();
 const port = 8080;
@@ -20,6 +24,7 @@ const tripController = new TripController();
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
+app.use("/api/docs", swaggerUi.serve, swaggerUi.setup(openApiSpec));
 
 const generateSessionSecret = () => {
   return crypto.randomBytes(32).toString("hex");

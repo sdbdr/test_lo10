@@ -32,7 +32,9 @@
     "react-google-autocomplete": "^2.7.3",
     "react-router-dom": "^6.11.1",
     "react-scripts": "5.0.1",
-    "web-vitals": "^2.1.4"
+    "swagger-ui-express": "^4.6.3",
+    "web-vitals": "^2.1.4",
+    "yamljs": "^0.3.0"
   },
   "scripts": {
     "start": "react-scripts start",
