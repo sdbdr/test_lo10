@@ -1,11 +1,23 @@
 import Navbar from "../Header/NavBar";
 import ResearchPage from "./Research/ResearchPage";
-import { TripBox, TripDetail, TripPage } from "./Trip";
+import {
+  TripBox,
+  TripManagement,
+  TripPage,
+  TripNavBar,
+  TripItinary,
+  TripTasks,
+  InvitationLink,
+} from "./Trip";
 
 export {
-    Navbar,
-    ResearchPage,
-    TripBox,
-    TripDetail,
-    TripPage
+  Navbar,
+  ResearchPage,
+  TripBox,
+  TripManagement,
+  TripPage,
+  TripNavBar,
+  TripItinary,
+  TripTasks,
+  InvitationLink,
 };
